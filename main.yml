@@ -1,0 +1,82 @@
+---
+- name: Manage SFDC opportunities as Asana tasks
+  hosts: localhost
+  gather_facts: false
+
+  vars_files:
+    - group_vars/all
+
+  # Run these pre_tasks to reduce the amount of api calls
+  pre_tasks:
+    - name: Read csv file and return a dict
+      community.general.read_csv:
+        path: ~/sfdcopps.csv
+        skipinitialspace: true
+        strict: false
+      register: csvopps
+      delegate_to: localhost
+
+    - name: Get a list of all tasks in a project
+      uri:
+        url: "{{ asana_api }}/projects/{{asana_project_id}}/tasks"
+        headers:
+          Content-Type: application/json
+          Authorization: "{{asana_token}}"
+        method: GET
+        body_format: json
+        validate_certs: "{{ validate_certs }}"
+        status_code: 200
+      register: project_tasks
+
+    - name: Set the project_gid
+      vars:
+        task_name: "{{customer_name}}|{{opp_number}}|opp_name"
+        nquery: "[? name==`{{task_name}}`]"
+      set_fact:
+        task_gid: "{{item.gid}}"
+      with_items: "{{project_tasks.json.data|json_query(nquery)}}"
+
+  tasks:
+    - name: Convert dict to list and Loop through each item
+      include_tasks: update-existing-tasks.yml
+      vars:
+        close_date: "{{ item['Close Date'] }}"
+        created_date: "{{ item['Created Date'] }}"
+        customer_name: "{{ item['Global Customer Name'] }}"
+        description: "{{ item['Description'] }}"
+        fiscal_quarter: "{{ item['Fiscal Quarter'] }}"
+        forecast_category: "{{ item['Forecast Category'] }}"
+        next_step: "{{ item['Next Step'] }}"
+        opp_id: "{{ item['Opportunity ID'] }}"
+        opp_number: "{{ item['Opportunity Number'] }}"
+        opp_name: "{{ item['Opportunity Name'] }}"
+        opp_owner: "{{ item['Opportunity Owner'] }}"
+        opp_record_type: "{{ item['Opportunity Record Type'] }}"
+        products: "{{ item['Products'] }}"
+        reason: "{{ item['Reason Closed/Lost'] }} - {{ item['Reason Won/Lost (Sales Process)'] }} "
+        syb: "{{ item['1st Year Booking'] }}"
+        tb: "{{ item['Total Amount'] }}"
+        tech_win_date: "{{ item['Technical Win Date'] }}"
+      loop: "{{ csvopps.list }}"
+
+    - name: Convert dict to list and Loop through each item
+      include_tasks: update-existing-tasks.yml
+      vars:
+        close_date: "{{ item['Close Date'] }}"
+        created_date: "{{ item['Created Date'] }}"
+        customer_name: "{{ item['Global Customer Name'] }}"
+        description: "{{ item['Description'] }}"
+        fiscal_quarter: "{{ item['Fiscal Quarter'] }}"
+        forecast_category: "{{ item['Forecast Category'] }}"
+        next_step: "{{ item['Next Step'] }}"
+        opp_id: "{{ item['Opportunity ID'] }}"
+        opp_number: "{{ item['Opportunity Number'] }}"
+        opp_name: "{{ item['Opportunity Name'] }}"
+        opp_owner: "{{ item['Opportunity Owner'] }}"
+        opp_record_type: "{{ item['Opportunity Record Type'] }}"
+        products: "{{ item['Products'] }}"
+        reason: "{{ item['Reason Closed/Lost'] }} - {{ item['Reason Won/Lost (Sales Process)'] }} "
+        syb: "{{ item['1st Year Booking'] }}"
+        tb: "{{ item['Total Amount'] }}"
+        tech_win_date: "{{ item['Technical Win Date'] }}"
+      loop: "{{ csvopps.list }}"

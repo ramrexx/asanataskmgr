@@ -1,0 +1,176 @@
+# Loop through project_tasks looking for a matching task name
+- block:
+  - name: reset task_gid variable
+    set_fact:
+      task_gid: false
+
+  - name: Opp({{opp_number}})-Check to see if the task already exists
+    vars:
+      task_name: "{{customer_name}}|{{opp_number}}|{{opp_name}}"
+      nquery: "[? name==`{{task_name}}`]"
+    set_fact:
+      task_gid: "{{item.gid}}"
+    with_items: "{{project_tasks.json.data|json_query(nquery)}}"
+
+- debug:
+    msg: "Task found: {{task_gid}}"
+  when: task_gid
+
+# Match the gid of the asana Opportunity Type (Renewal, Net New, TechnicalWin)
+# RFE: Look through project_tasks for the gid to make this more dynamic
+- block:
+  - name: Opp({{opp_number}})-Set asana_opp_type({{opp_record_type}})
+    set_fact:
+      asana_opp_type: "{{asana_opp_types[opp_record_type]}}"
+  rescue:
+    - name: Opp({{opp_number}})-Set asana_opp_type to (TechnicalWin)
+      set_fact:
+        asana_opp_type: "{{asana_opp_types['TechnicalWin']}}"
+
+- debug:
+    var: asana_opp_type
+
+# Match the gid of the asana templates to clone (TMP-RENEWAL, TMP-NETNEW, and TMP-INACTIVE)
+# RFE: Look through project_tasks for the gid to make this more dynamic
+- block:
+  - name: Opp({{opp_number}})-Set asana_task_template({{opp_record_type}})
+    set_fact:
+      asana_task_template: "{{asana_template_tasks[opp_record_type]}}"
+  rescue:
+    - name: Opp({{opp_number}})-Set asana_task_template to (inactive)
+      set_fact:
+        asana_task_template: "{{asana_template_tasks['inactive']}}"
+
+- debug:
+    var: asana_task_template
+
+# Clone the asana_task_template with all of the subtasks preloaded
+- name: Opp({{opp_number}})-Cloning asana_task_template({{asana_task_template}})
+  uri:
+    url: "{{ asana_api }}/tasks/{{asana_task_template}}/duplicate"
+    headers:
+      Authorization: "{{asana_token}}"
+    method: POST
+    body:
+      data:
+        include:
+        - attachments
+        - dependencies
+        - notes
+        - assignee
+        - parent
+        - projects
+        - subtasks
+        - notes
+        - tags
+        name: "{{customer_name}}|{{opp_number}}|{{opp_name}}"
+    body_format: json
+    validate_certs: "{{ validate_certs }}"
+    status_code: 200,201
+  register: cloned_task
+  when: not task_gid
+
+# Set task_gid to the newly cloned task
+- name: Opp({{opp_number}})-Set task_gid of new task
+  set_fact:
+    task_gid: "{{cloned_task.json.data.new_task.gid}}"
+  when: (not task_gid) and (cloned_task is defined)
+
+- debug:
+    var: task_gid
+
+# Match the gid of the asana section (Commit, Best Case, Pipeline, else TechnicalWins)
+# RFE: Look through project_tasks for the gid to make this more dynamic
+- block:
+  - name: Opp({{opp_number}})-Set section_gid to forecast_category({{forecast_category}})
+    set_fact:
+      section_gid: "{{asana_sections[forecast_category]}}"
+  rescue:
+    - name: Opp({{opp_number}})-Set section_gid to (TechnicalWins)
+      set_fact:
+        section_gid: "{{asana_sections['TechnicalWins']}}"
+
+- debug:
+    var: section_gid
+
+# Move the task to the appropriate asana section (Commit, Best Case, Pipeline, else TechnicalWins)
+- name: Opp({{opp_number}})-Move task to the appropriate section
+  uri:
+    url: "{{ asana_api }}/sections/{{section_gid}}/addTask"
+    headers:
+      Authorization: "{{asana_token}}"
+    method: POST
+    body:
+      data:
+        task: "{{task_gid}}"
+    body_format: json
+    validate_certs: "{{ validate_certs }}"
+    status_code: 200
+  register: addtask_to_section
+
+# Match the gid of the asana Fiscal Quarters (Q1, Q2, Q3, Q4)
+# RFE: Look through project_tasks for the gid to make this more dynamic
+- name: Opp({{opp_number}})-Set fiscal_quarter({{fiscal_quarter}})
+  set_fact:
+    asana_fq: "{{asana_fiscal_quarters[fiscal_quarter]}}"
+
+# Check to see if the opp is closed or has a technical win date set
+- name: Opp({{opp_number}})-Check if forecast category is closed or tech_win_date({{tech_win_date}}) is set
+  set_fact:
+    techwon: true
+  when: (tech_win_date | length > 0) or (forecast_category == 'Closed')
+
+# Update task with notes, custom fields
+- name: Opp({{opp_number}})-Update task notes and custom fields
+  uri:
+    url: "{{ asana_api }}/tasks/{{task_gid}}"
+    headers:
+      Authorization: "{{asana_token}}"
+    method: PUT
+    body:
+      data:
+        completed: "{{techwon | default(false)}}"
+        custom_fields:
+          '1182531335993465': "{{opp_owner}}" # AE
+          '1195217282482432': "{{opp_number}}" # Opportunity Number
+          '1200113936496375': "https://redhat.my.salesforce.com/{{opp_id}}" # SFDC Link
+          '1200114261516681': "{{tb}}" # TB
+          '1200114261516679': "{{syb}}" # SYB
+          '1200008973756201': "{{asana_fq | default(omit) }}" # Fiscal Quarter
+          '1200046075857084': "{{asana_opp_type | default(omit) }}" # OpportunityType
+        due_on: "{{close_date}}" # close_date
+        # name:
+        notes: |
+          Opportunity Owner - "{{opp_owner}}"
+          Opportunity Number - "{{opp_number}}"
+          Created Date - "{{created_date}}"
+          Technical Win Date - "{{tech_win_date}}"
+          Products - "{{products}}"
+
+          Next Step
+          "{{next_step}}"
+
+          Description:
+          "{{description}}"
+    body_format: json
+    validate_certs: "{{ validate_certs }}"
+    status_code: 200,201
+  register: addtask_to_section
+  when: task_gid | length > 0
+
+# Lopp through the normalized products and apply product_tags
+# RFE: Look through project_tasks for the gid to make this more dynamic
+- name: Opp({{opp_number}})-Adding products({{products}}) to task
+  uri:
+    url: "{{ asana_api }}/tasks/{{task_gid}}/addTag"
+    headers:
+      Authorization: "{{asana_token}}"
+    method: POST
+    body:
+      data:
+        tag: "{{product_tags[item]}}"
+    body_format: json
+    validate_certs: "{{ validate_certs }}"
+    status_code: 200,201
+  register: addtask_to_section
+  loop: "{{products.split('|')}}"

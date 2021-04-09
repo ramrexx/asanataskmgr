@@ -49,7 +49,7 @@
         tb: "{{ csv_item['Total Amount'] }}"
         tech_win_date: "{{ csv_item['Technical Win Date'] | default('') }}"
         # reset variables
-        dict_var: {}
+        task_gid: ''
         techwon: false
       loop: "{{ csvopps.list }}"
       loop_control:

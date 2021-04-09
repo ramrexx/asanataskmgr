@@ -4,47 +4,45 @@
     task_name: "{{customer_name}}|{{opp_number}}|{{opp_name}}"
     nquery: "[? name==`{{task_name}}`]"
   set_fact:
-    dict_var: "{{dict_var | combine({'task_gid': item.gid}) }}"
+    task_gid: "{{item.gid}}"
   with_items: "{{project_tasks.json.data|json_query(nquery)}}"
 
 - debug:
-    # var: dict_var['task_gid']
-    var: dict_var
-  # when: dict_var['task_gid'] is defined
+    var: task_gid
 
 # Match the gid of the asana Opportunity Type (Renewal, Net New, TechnicalWin)
 # RFE: Look through project_tasks for the gid to make this more dynamic
 - block:
   - name: Opp({{opp_number}})-Set asana_opp_type({{opp_record_type}})
     set_fact:
-      dict_var: "{{dict_var | combine({'asana_opp_type': asana_opp_types[opp_record_type] }) }}"
+      asana_opp_type: "{{asana_opp_types[opp_record_type]}}"
   rescue:
     - name: Opp({{opp_number}})-Set asana_opp_type to (TechnicalWin)
       set_fact:
-        dict_var: "{{dict_var | combine({'asana_opp_type': asana_opp_types['TechnicalWin'] }) }}"
+        asana_opp_type: "{{asana_opp_types['TechnicalWin']}}"
 
 - debug:
-    msg: "{{dict_var['asana_opp_type']"
+    var: asana_opp_type
 
 # Match the gid of the asana templates to clone (TMP-RENEWAL, TMP-NETNEW, and TMP-INACTIVE)
 # RFE: Look through project_tasks for the gid to make this more dynamic
 - block:
   - name: Opp({{opp_number}})-Set asana_task_template({{opp_record_type}})
     set_fact:
-      dict_var: "{{dict_var | combine({'asana_task_template': asana_template_tasks[opp_record_type] }) }}"
+      asana_task_template: "{{asana_template_tasks[opp_record_type]}}"
   rescue:
     - name: Opp({{opp_number}})-Set asana_task_template to (inactive)
       set_fact:
-        dict_var: "{{dict_var | combine({'asana_task_template': asana_template_tasks['inactive'] }) }}"
+        asana_task_template: "{{asana_template_tasks['inactive']}}"
 
 - debug:
-    msg: "{{dict_var}}" #['asana_task_template']
+    var: asana_task_template
 
 # Clone the asana_task_template with all of the subtasks preloaded
 - block:
   - name: Opp({{opp_number}})-Cloning asana_task_template({{asana_task_template}})
     uri:
-      url: "{{ asana_api }}/tasks/{{dict_var['asana_task_template']}}/duplicate"
+      url: "{{ asana_api }}/tasks/{{asana_task_template}}/duplicate"
       headers:
         Authorization: "{{asana_token}}"
       method: POST
@@ -69,36 +67,36 @@
   # Set task_gid to the newly cloned task
   - name: Opp({{opp_number}})-Set task_gid of new task
     set_fact:
-      dict_var: "{{dict_var | combine({'task_gid': cloned_task.json.data.new_task.gid}) }}"
+      task_gid: "{{cloned_task.json.data.new_task.gid}}"
 
   - debug:
-      var: dict_var['task_gid']
+      var: task_gid
 
 # Match the gid of the asana section (Commit, Best Case, Pipeline, else TechnicalWins)
 # RFE: Look through project_tasks for the gid to make this more dynamic
 - block:
   - name: Opp({{opp_number}})-Set section_gid to forecast_category({{forecast_category}})
     set_fact:
-      dict_var: "{{dict_var | combine({'section_gid': asana_sections[forecast_category] }) }}"
+      section_gid: "{{asana_sections[forecast_category]}}"
   rescue:
     - name: Opp({{opp_number}})-Set section_gid to (TechnicalWins)
       set_fact:
-        dict_var: "{{dict_var | combine({'section_gid': asana_sections['TechnicalWins'] }) }}"
+        section_gid: "{{asana_sections[TechnicalWins]}}"
         techwon: true # set to true since it is not an active opp
 
 - debug:
-      var: dict_var['section_gid']
+      var: section_gid
 
 # Move the task to the appropriate asana section (Commit, Best Case, Pipeline, else TechnicalWins)
 - name: Opp({{opp_number}})-Move task to the appropriate section
   uri:
-    url: "{{ asana_api }}/sections/{{dict_var['section_gid']}}/addTask"
+    url: "{{ asana_api }}/sections/{{section_gid}}/addTask"
     headers:
       Authorization: "{{asana_token}}"
     method: POST
     body:
       data:
-        task: "{{dict_var['task_gid']}}"
+        task: "{{task_gid}}"
     body_format: json
     validate_certs: "{{ validate_certs }}"
     status_code: 200
@@ -108,10 +106,10 @@
 # RFE: Look through project_tasks for the gid to make this more dynamic
 - name: Opp({{opp_number}})-Set fiscal_quarter({{fiscal_quarter}})
   set_fact:
-    dict_var: "{{dict_var | combine({'asana_fq': asana_fiscal_quarters[fiscal_quarter] }) }}"
+    asana_fq: "{{asana_fiscal_quarters[fiscal_quarter]}}"
 
 - debug:
-      var: dict_var['asana_fq']
+      var: asana_fq
 
 # Check to see if the opp is closed or has a technical win date set
 - name: Opp({{opp_number}})-Check if tech_win_date({{tech_win_date}}) is set
@@ -127,7 +125,7 @@
 # Update task with notes, custom fields
 - name: Opp({{opp_number}})-Update task notes and custom fields
   uri:
-    url: "{{ asana_api }}/tasks/{{dict_var['task_gid']}}"
+    url: "{{ asana_api }}/tasks/{{task_gid}}"
     headers:
       Authorization: "{{asana_token}}"
     method: PUT
@@ -140,8 +138,8 @@
           '1200113936496375': "https://redhat.my.salesforce.com/{{opp_id}}" # SFDC Link
           '1200114261516681': "{{tb}}" # TB
           '1200114261516679': "{{syb}}" # SYB
-          '1200008973756201': "{{dict_var['asana_fq']}}" # Fiscal Quarter
-          '1200046075857084': "{{dict_var['asana_opp_type']}}" # OpportunityType
+          '1200008973756201': "{{asana_fq}}" # Fiscal Quarter
+          '1200046075857084': "{{asana_opp_type}}" # OpportunityType
           '1200176345337880': "{{tech_win_date}}" # Technical Win Date
         due_on: "{{close_date}}" # close_date
         # name:
@@ -160,13 +158,13 @@
     validate_certs: "{{ validate_certs }}"
     status_code: 200,201
   register: addtask_to_section
-  when: dict_var['task_gid'] | length > 0
+  when: task_gid | length > 0
 
 # Lopp through the normalized products and apply product_tags
 # RFE: Look through project_tasks for the gid to make this more dynamic
 - name: Opp({{opp_number}})-Adding products({{products}}) to task
   uri:
-    url: "{{ asana_api }}/tasks/{{dict_var['task_gid']}}/addTag"
+    url: "{{ asana_api }}/tasks/{{task_gid]}}/addTag"
     headers:
       Authorization: "{{asana_token}}"
     method: POST
@@ -177,5 +175,5 @@
     validate_certs: "{{ validate_certs }}"
     status_code: 200,201
   register: addtask_to_section
-  when: dict_var['task_gid'] | length > 0
+  when: task_gid | length > 0
   loop: "{{products.split('|')}}"

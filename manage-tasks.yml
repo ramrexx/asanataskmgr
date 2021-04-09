@@ -1,14 +1,19 @@
+- name: reset vars
+  set_fact:
+    tsk_gid: 'empty'
+    techwon: false
+
 # Loop through project_tasks looking for a matching task name
 - name: Opp({{opp_number}})-Check to see if the task already exists
   vars:
     task_name: "{{customer_name}}|{{opp_number}}|{{opp_name}}"
     nquery: "[? name==`{{task_name}}`]"
   set_fact:
-    task_gid: "{{item.gid}}"
+    tsk_gid: "{{item.gid}}"
   with_items: "{{project_tasks.json.data|json_query(nquery)}}"
 
 - debug:
-    var: task_gid
+    var: tsk_gid
 
 # Match the gid of the asana Opportunity Type (Renewal, Net New, TechnicalWin)
 # RFE: Look through project_tasks for the gid to make this more dynamic
@@ -64,13 +69,14 @@
       status_code: 200,201
     register: cloned_task
 
-  # Set task_gid to the newly cloned task
-  - name: Opp({{opp_number}})-Set task_gid of new task
+  # Set  to the newly cloned task
+  - name: Opp({{opp_number}})-Set tsk_gid of new task
     set_fact:
-      task_gid: "{{cloned_task.json.data.new_task.gid}}"
+      tsk_gid: "{{cloned_task.json.data.new_task.gid}}"
+  when: tsk_gid == 'empty'
 
-  - debug:
-      var: task_gid
+- debug:
+    var: tsk_gid
 
 # Match the gid of the asana section (Commit, Best Case, Pipeline, else TechnicalWins)
 # RFE: Look through project_tasks for the gid to make this more dynamic
@@ -78,10 +84,11 @@
   - name: Opp({{opp_number}})-Set section_gid to forecast_category({{forecast_category}})
     set_fact:
       section_gid: "{{asana_sections[forecast_category]}}"
+    failed_when: (tech_win_date != '')
   rescue:
     - name: Opp({{opp_number}})-Set section_gid to (TechnicalWins)
       set_fact:
-        section_gid: "{{asana_sections[TechnicalWins]}}"
+        section_gid: "{{asana_sections['TechnicalWins']}}"
         techwon: true # set to true since it is not an active opp
 
 - debug:
@@ -96,7 +103,7 @@
     method: POST
     body:
       data:
-        task: "{{task_gid}}"
+        task: "{{tsk_gid}}"
     body_format: json
     validate_certs: "{{ validate_certs }}"
     status_code: 200
@@ -111,21 +118,20 @@
 - debug:
       var: asana_fq
 
-# Check to see if the opp is closed or has a technical win date set
-- name: Opp({{opp_number}})-Check if tech_win_date({{tech_win_date}}) is set
-  set_fact:
-    techwon: true
-  when: tech_win_date | string | length > 0
+# Check to see if the opp has a technical win date set
+# - name: Opp({{opp_number}})-Check if tech_win_date({{tech_win_date}}) is set
+#   set_fact:
+#     techwon: true
+#   when: tech_win_date != ''
 
-- name: Opp({{opp_number}})-TechnicalWin Found
+- name: Opp({{opp_number}})-TechnicalWin?
   debug:
     var: techwon
-  when: techwon | bool
 
 # Update task with notes, custom fields
 - name: Opp({{opp_number}})-Update task notes and custom fields
   uri:
-    url: "{{ asana_api }}/tasks/{{task_gid}}"
+    url: "{{ asana_api }}/tasks/{{tsk_gid}}"
     headers:
       Authorization: "{{asana_token}}"
     method: PUT
@@ -158,13 +164,12 @@
     validate_certs: "{{ validate_certs }}"
     status_code: 200,201
   register: addtask_to_section
-  when: task_gid | length > 0
 
 # Lopp through the normalized products and apply product_tags
 # RFE: Look through project_tasks for the gid to make this more dynamic
 - name: Opp({{opp_number}})-Adding products({{products}}) to task
   uri:
-    url: "{{ asana_api }}/tasks/{{task_gid]}}/addTag"
+    url: "{{ asana_api }}/tasks/{{tsk_gid}}/addTag"
     headers:
       Authorization: "{{asana_token}}"
     method: POST
@@ -175,5 +180,4 @@
     validate_certs: "{{ validate_certs }}"
     status_code: 200,201
   register: addtask_to_section
-  when: task_gid | length > 0
   loop: "{{products.split('|')}}"

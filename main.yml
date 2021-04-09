@@ -48,9 +48,6 @@
         syb: "{{ csv_item['1st Year Booking'] }}"
         tb: "{{ csv_item['Total Amount'] }}"
         tech_win_date: "{{ csv_item['Technical Win Date'] | default('') }}"
-        # reset variables
-        task_gid: ''
-        techwon: false
       loop: "{{ csvopps.list }}"
       loop_control:
         loop_var: csv_item

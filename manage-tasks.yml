@@ -94,6 +94,10 @@
 - debug:
       var: section_gid
 
+- name: Opp({{opp_number}})-TechnicalWin?
+  debug:
+    var: techwon
+
 # Move the task to the appropriate asana section (Commit, Best Case, Pipeline, else TechnicalWins)
 - name: Opp({{opp_number}})-Move task to the appropriate section
   uri:
@@ -117,16 +121,6 @@
 
 - debug:
       var: asana_fq
-
-# Check to see if the opp has a technical win date set
-# - name: Opp({{opp_number}})-Check if tech_win_date({{tech_win_date}}) is set
-#   set_fact:
-#     techwon: true
-#   when: tech_win_date != ''
-
-- name: Opp({{opp_number}})-TechnicalWin?
-  debug:
-    var: techwon
 
 # Update task with notes, custom fields
 - name: Opp({{opp_number}})-Update task notes and custom fields

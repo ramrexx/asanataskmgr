@@ -16,18 +16,10 @@
       register: csvopps
       delegate_to: localhost
 
-    - name: Get a list of all tasks in a project
-      uri:
-        url: "{{ asana_api }}/projects/{{asana_project_id}}/tasks"
-        headers:
-          Content-Type: application/json
-          Authorization: "{{asana_token}}"
-        method: GET
-        validate_certs: "{{ validate_certs }}"
-        status_code: 200
-      register: project_tasks
-
   tasks:
+    - name: Lookup project details
+      include_tasks: lookup-asana-details.yml
+
     - name: Convert dict to list and Loop through each item
       include_tasks: manage-tasks.yml
       vars:
@@ -44,10 +36,10 @@
         opp_owner: "{{ csv_item['Opportunity Owner'] }}"
         opp_record_type: "{{ csv_item['Opportunity Record Type'] }}"
         products: "{{ csv_item['Products'] }}"
-        reason: "{{ csv_item['Reason Closed/Lost'] | default('') }} - {{ csv_item['Reason Won/Lost (Sales Process)'] | default('') }} "
+        reason: "{{ csv_item['Reason Closed/Lost'] }} - {{ csv_item['Reason Won/Lost (Sales Process)'] }} "
         syb: "{{ csv_item['1st Year Booking'] }}"
         tb: "{{ csv_item['Total Amount'] }}"
-        tech_win_date: "{{ csv_item['Technical Win Date'] | default('') }}"
+        tech_win_date: "{{ csv_item['Technical Win Date'] }}"
       loop: "{{ csvopps.list }}"
       loop_control:
         loop_var: csv_item

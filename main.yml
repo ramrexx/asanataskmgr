@@ -16,10 +16,11 @@
       register: csvopps
       delegate_to: localhost
 
-  tasks:
     - name: Include vaulted asana_token
       include_vars: ~/asana-vault.yml
 
+
+  tasks:
     - name: Lookup project {{asana_project_name}} and get project_tasks
       include_tasks: lookup-asana-details.yml
 

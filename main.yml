@@ -17,7 +17,10 @@
       delegate_to: localhost
 
   tasks:
-    - name: Lookup project details
+    - name: Include vaulted asana_token
+      include_vars: ~/asana-vault.yml
+
+    - name: Lookup project {{asana_project_name}} and get project_tasks
       include_tasks: lookup-asana-details.yml
 
     - name: Convert dict to list and Loop through each item

@@ -1,4 +1,4 @@
-asana_project_id:
+asana_project_name: My Asana Project
 asana_api: https://app.asana.com/api/1.0
 asana_token:
 validate_certs: false

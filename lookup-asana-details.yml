@@ -9,9 +9,9 @@
     status_code: 200
   register: asana_projects
 
-- name: Searching the projects for ({{project_name}})
+- name: Searching the projects for ({{asana_project_name}})
   vars:
-    nquery: "[? name==`{{project_name}}`]"
+    nquery: "[? name==`{{asana_project_name}}`]"
   set_fact:
     project_gid: "{{item.gid}}"
   with_items: "{{asana_projects.json.data|json_query(nquery)}}"
@@ -21,7 +21,7 @@
     var: project_gid
   failed_when: project_gid is not defined
 
-- name: Get a list of tasks in a project ({{project_name}})
+- name: Get a list of tasks in a project ({{asana_project_name}})
   uri:
     url: "{{ asana_api }}/projects/{{project_gid}}/tasks"
     headers:

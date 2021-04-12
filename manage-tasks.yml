@@ -133,9 +133,14 @@
       data:
         completed: "{{techwon | bool}}"
         custom_fields:
+          # "{{project_fields['AE']}}": "{{opp_owner}}" # AE
           '1182531335993465': "{{opp_owner}}" # AE
+          # "{{project_fields['Opportunity Number']}}": "{{opp_number}}" # Opportunity Number
+          # "{{project_details['SFDC']}}": "https://redhat.my.salesforce.com/{{opp_id}}" # SFDC Link
           '1195217282482432': "{{opp_number}}" # Opportunity Number
           '1200113936496375': "https://redhat.my.salesforce.com/{{opp_id}}" # SFDC Link
+          # "{{project_fields['TB']}}": "{{tb}}" # TB
+          # "{{project_fields['SYB']}}": "{{syb}}" # SYB
           '1200114261516681': "{{tb}}" # TB
           '1200114261516679': "{{syb}}" # SYB
           '1200008973756201': "{{asana_fq}}" # Fiscal Quarter

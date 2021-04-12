@@ -4,7 +4,7 @@
   gather_facts: false
 
   vars_files:
-    - group_vars/all
+    - group_vars/all.yml
 
   # Run these pre_tasks to reduce the amount of api calls
   pre_tasks:

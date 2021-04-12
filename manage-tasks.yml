@@ -133,21 +133,17 @@
       data:
         completed: "{{techwon | bool}}"
         custom_fields:
-          # "{{project_fields['AE']}}": "{{opp_owner}}" # AE
+          # custom_text_field_names
           '1182531335993465': "{{opp_owner}}" # AE
-          # "{{project_fields['Opportunity Number']}}": "{{opp_number}}" # Opportunity Number
-          # "{{project_details['SFDC']}}": "https://redhat.my.salesforce.com/{{opp_id}}" # SFDC Link
           '1195217282482432': "{{opp_number}}" # Opportunity Number
           '1200113936496375': "https://redhat.my.salesforce.com/{{opp_id}}" # SFDC Link
-          # "{{project_fields['TB']}}": "{{tb}}" # TB
-          # "{{project_fields['SYB']}}": "{{syb}}" # SYB
           '1200114261516681': "{{tb}}" # TB
           '1200114261516679': "{{syb}}" # SYB
+          '1200176345337880': "{{tech_win_date}}" # Technical Win Date
+          # custom_dropdown_field_names
           '1200008973756201': "{{asana_fq}}" # Fiscal Quarter
           '1200046075857084': "{{asana_opp_type}}" # OpportunityType
-          '1200176345337880': "{{tech_win_date}}" # Technical Win Date
         due_on: "{{close_date}}" # close_date
-        # name:
         notes: |
           Opportunity Owner - "{{opp_owner}}"
           Opportunity Number - "{{opp_number}}"
@@ -162,7 +158,7 @@
     body_format: json
     validate_certs: "{{ validate_certs }}"
     status_code: 200,201
-  register: addtask_to_section
+  register: update_task
 
 # Lopp through the normalized products and apply product_tags
 # RFE: Look through project_tasks for the gid to make this more dynamic
@@ -174,9 +170,11 @@
     method: POST
     body:
       data:
-        tag: "{{product_tags[item]}}"
+        tag: "{{product_tags[pt]}}"
     body_format: json
     validate_certs: "{{ validate_certs }}"
     status_code: 200,201
-  register: addtask_to_section
+  register: add_tags
   loop: "{{products.split('|')}}"
+  loop_control:
+    loop_var: pt

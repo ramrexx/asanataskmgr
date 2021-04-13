@@ -133,16 +133,16 @@
       data:
         completed: "{{techwon | bool}}"
         custom_fields:
-          # custom_text_field_names
-          '1182531335993465': "{{opp_owner}}" # AE
-          '1195217282482432': "{{opp_number}}" # Opportunity Number
-          '1200113936496375': "https://redhat.my.salesforce.com/{{opp_id}}" # SFDC Link
-          '1200114261516681': "{{tb}}" # TB
-          '1200114261516679': "{{syb}}" # SYB
-          '1200176345337880': "{{tech_win_date}}" # Technical Win Date
-          # custom_dropdown_field_names
-          '1200008973756201': "{{asana_fq}}" # Fiscal Quarter
-          '1200046075857084': "{{asana_opp_type}}" # OpportunityType
+          # custom text fields
+          '1182531335993465': "{{opp_owner}}" # AE (Global)
+          '1195217282482432': "{{opp_number}}" # Opportunity Number (Global)
+          '1200113936496375': "https://redhat.my.salesforce.com/{{opp_id}}" # SFDC Link (Global)
+          '1200114261516681': "{{tb}}" # TB (Global)
+          '1200038584667544': "{{syb}}" # SYB (Global)
+          '1200176345337880': "{{tech_win_date}}" # Technical Win Date (Global)
+          # custom dropdown field names
+          '1200008973756201': "{{asana_fq}}" # Fiscal Quarter (Global)
+          '1200046075857084': "{{asana_opp_type}}" # OpportunityType (Global)
         due_on: "{{close_date}}" # close_date
         notes: |
           Opportunity Owner - "{{opp_owner}}"

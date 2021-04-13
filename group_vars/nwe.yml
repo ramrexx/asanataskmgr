@@ -1,0 +1,16 @@
+asana_project_name: NWE TechOps
+csv_file: ~/nwe-sfdcopps.csv
+
+# project task gids are unique to a region / project
+asana_template_tasks:
+  'Renewal': '1200192032022787' # TMP-RENEWAL
+  'Overlay Credit': '1200192032022787' # TMP-RENEWAL
+  'NA Sales Opportunity': '1200192032022785' # TMP-NETNEW
+  'inactive': '1200192032022783' # TMP-INACTIVE
+
+# project section gids are unique to a region / project
+asana_sections:
+  'Commit': '1200192032022778'
+  'Best Case': '1200192032022779'
+  'Pipeline': '1200192032022780'
+  'TechnicalWins': '1200192032022781'

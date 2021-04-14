@@ -17,6 +17,9 @@
       register: csvopps
       delegate_to: localhost
 
+    - set_fact:
+        num_ops: "{{ csvopps.list|count }}"
+
     - name: Include vaulted asana_token
       include_vars: ~/asana-vault.yml
 
@@ -48,6 +51,7 @@
       loop: "{{ csvopps.list }}"
       loop_control:
         loop_var: csv_item
+        index_var: csv_index
 
       # count number of opportunities processed
     - name: Play Summary

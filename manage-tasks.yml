@@ -1,10 +1,9 @@
-- name: reset vars
-  set_fact:
+- set_fact:
     tsk_gid: 'empty'
     techwon: false
 
 # Loop through project_tasks looking for a matching task name
-- name: Opp({{opp_number}})-Check to see if the task already exists
+- name: Opp[{{opp_number}}]-({{csv_index}}/{{num_ops}})-Check to see if the task already exists
   vars:
     task_name: "{{customer_name}}|{{opp_number}}|{{opp_name}}"
     nquery: "[? name==`{{task_name}}`]"
@@ -18,7 +17,7 @@
 # Match the gid of the asana Opportunity Type (Renewal, Net New, TechnicalWin)
 # RFE: Look through project_tasks for the gid to make this more dynamic
 - block:
-  - name: Opp({{opp_number}})-Set asana_opp_type({{opp_record_type}})
+  - name: Opp[{{opp_number}}]-({{csv_index}}/{{num_ops}})-Set asana_opp_type({{opp_record_type}})
     set_fact:
       asana_opp_type: "{{asana_opp_types[opp_record_type]}}"
   rescue:
@@ -32,7 +31,7 @@
 # Match the gid of the asana templates to clone (TMP-RENEWAL, TMP-NETNEW, and TMP-INACTIVE)
 # RFE: Look through project_tasks for the gid to make this more dynamic
 - block:
-  - name: Opp({{opp_number}})-Set asana_task_template({{opp_record_type}})
+  - name: Opp[{{opp_number}}]-({{csv_index}}/{{num_ops}})-Set asana_task_template({{opp_record_type}})
     set_fact:
       asana_task_template: "{{asana_template_tasks[opp_record_type]}}"
   rescue:
@@ -45,7 +44,7 @@
 
 # Clone the asana_task_template with all of the subtasks preloaded
 - block:
-  - name: Opp({{opp_number}})-Cloning asana_task_template({{asana_task_template}})
+  - name: Opp[{{opp_number}}]-({{csv_index}}/{{num_ops}})-Cloning asana_task_template({{asana_task_template}})
     uri:
       url: "{{ asana_api }}/tasks/{{asana_task_template}}/duplicate"
       headers:
@@ -70,7 +69,7 @@
     register: cloned_task
 
   # Set  to the newly cloned task
-  - name: Opp({{opp_number}})-Set tsk_gid of new task
+  - name: Opp[{{opp_number}}]-({{csv_index}}/{{num_ops}})-Set tsk_gid of new task
     set_fact:
       tsk_gid: "{{cloned_task.json.data.new_task.gid}}"
   when: tsk_gid == 'empty'
@@ -81,7 +80,7 @@
 # Match the gid of the asana section (Commit, Best Case, Pipeline, else TechnicalWins)
 # RFE: Look through project_tasks for the gid to make this more dynamic
 - block:
-  - name: Opp({{opp_number}})-Set section_gid to forecast_category({{forecast_category}})
+  - name: Opp[{{opp_number}}]-({{csv_index}}/{{num_ops}})-Set section_gid to forecast_category({{forecast_category}})
     set_fact:
       section_gid: "{{asana_sections[forecast_category]}}"
     failed_when: (tech_win_date != '')
@@ -94,12 +93,12 @@
 - debug:
       var: section_gid
 
-- name: Opp({{opp_number}})-TechnicalWin?
+- name: Opp[{{opp_number}}]-({{csv_index}}/{{num_ops}})-TechnicalWin?
   debug:
     var: techwon
 
 # Move the task to the appropriate asana section (Commit, Best Case, Pipeline, else TechnicalWins)
-- name: Opp({{opp_number}})-Move task to the appropriate section
+- name: Opp[{{opp_number}}]-({{csv_index}}/{{num_ops}})-Move task to the appropriate section
   uri:
     url: "{{ asana_api }}/sections/{{section_gid}}/addTask"
     headers:
@@ -115,7 +114,7 @@
 
 # Match the gid of the asana Fiscal Quarters (Q1, Q2, Q3, Q4)
 # RFE: Look through project_tasks for the gid to make this more dynamic
-- name: Opp({{opp_number}})-Set fiscal_quarter({{fiscal_quarter}})
+- name: Opp[{{opp_number}}]-({{csv_index}}/{{num_ops}})-Set fiscal_quarter({{fiscal_quarter}})
   set_fact:
     asana_fq: "{{asana_fiscal_quarters[fiscal_quarter]}}"
 
@@ -123,7 +122,7 @@
       var: asana_fq
 
 # Update task with notes, custom fields
-- name: Opp({{opp_number}})-Update task notes and custom fields
+- name: Opp[{{opp_number}}]-({{csv_index}}/{{num_ops}})-Update task notes and custom fields
   uri:
     url: "{{ asana_api }}/tasks/{{tsk_gid}}"
     headers:
@@ -162,7 +161,7 @@
 
 # Lopp through the normalized products and apply product_tags
 # RFE: Look through project_tasks for the gid to make this more dynamic
-- name: Opp({{opp_number}})-Adding products({{products}}) to task
+- name: Opp[{{opp_number}}]-({{csv_index}}/{{num_ops}})-Adding products({{products}}) to task
   uri:
     url: "{{ asana_api }}/tasks/{{tsk_gid}}/addTag"
     headers:

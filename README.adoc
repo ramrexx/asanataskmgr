@@ -19,7 +19,7 @@
 
 = Welcome to Asana Task Manager
 
-Sync SFDC opportunities from a csv file to Asana Tasks
+Sync SFDC opportunities from a csv file to Asana Tasks using Ansible
 
 IMPORTANT: This repo is subject to frequent changes without warning.
 To avoid issues please **FORK** the repository!

@@ -48,6 +48,10 @@
         syb: "{{ csv_item['1st Year Booking'] }}"
         tb: "{{ csv_item['Total Amount'] }}"
         tech_win_date: "{{ csv_item['Technical Win Date'] }}"
+        channel: "{{ csv_item['Channel'] }}"
+        reseller: "{{ csv_item['Reseller'] }}"
+        leadsource: "{{ csv_item['Lead Source'] }}"
+        distributor: "{{ csv_item['Financial Partner'] }}"
       loop: "{{ csvopps.list }}"
       loop_control:
         loop_var: csv_item

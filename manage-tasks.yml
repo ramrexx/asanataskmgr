@@ -1,50 +1,38 @@
 - set_fact:
-    tsk_gid: 'empty'
+    tsk_gid: ''
     techwon: false
+    title_prefix: "({{customer_name}}) - ({{opp_number}}) - ({{csv_index}}/{{num_ops}})"
 
-# Loop through project_tasks looking for a matching task name
-- name: Opp[{{opp_number}}]-({{csv_index}}/{{num_ops}})-Check to see if the task already exists
+# Loop through project_tasks looking for a matching task name that contains the opportunity number
+- name: Opp {{title_prefix}} - Check to see if the task already exists
   vars:
-    task_name: "{{customer_name}}|{{opp_number}}|{{opp_name}}"
-    nquery: "[? name==`{{task_name}}`]"
+    _query: "[?contains(name, '{{ opp_number }}')].gid | [0]"
   set_fact:
-    tsk_gid: "{{item.gid}}"
-  with_items: "{{project_tasks.json.data|json_query(nquery)}}"
+    tsk_gid: "{{ project_tasks.json.data | to_json | from_json | json_query(_query) }}"
 
 - debug:
     var: tsk_gid
-
-# Match the gid of the asana Opportunity Type (Renewal, Net New, TechnicalWin)
-# RFE: Look through project_tasks for the gid to make this more dynamic
-- block:
-  - name: Opp[{{opp_number}}]-({{csv_index}}/{{num_ops}})-Set asana_opp_type({{opp_record_type}})
-    set_fact:
-      asana_opp_type: "{{asana_opp_types[opp_record_type]}}"
-  rescue:
-    - name: Opp({{opp_number}})-Set asana_opp_type to (TechnicalWin)
-      set_fact:
-        asana_opp_type: "{{asana_opp_types['TechnicalWin']}}"
-
-- debug:
-    var: asana_opp_type
+  when: tsk_gid != ''
 
 # Match the gid of the asana templates to clone (TMP-RENEWAL, TMP-NETNEW, and TMP-INACTIVE)
 # RFE: Look through project_tasks for the gid to make this more dynamic
 - block:
-  - name: Opp[{{opp_number}}]-({{csv_index}}/{{num_ops}})-Set asana_task_template({{opp_record_type}})
+  - name: Opp {{title_prefix}} - Set asana_task_template({{opp_record_type}})
     set_fact:
       asana_task_template: "{{asana_template_tasks[opp_record_type]}}"
+    when: tsk_gid == ''
   rescue:
-    - name: Opp({{opp_number}})-Set asana_task_template to (inactive)
+    - name: Opp {{title_prefix}} - Set asana_task_template to (inactive)
       set_fact:
         asana_task_template: "{{asana_template_tasks['inactive']}}"
 
 - debug:
     var: asana_task_template
+  when: tsk_gid == ''
 
 # Clone the asana_task_template with all of the subtasks preloaded
 - block:
-  - name: Opp[{{opp_number}}]-({{csv_index}}/{{num_ops}})-Cloning asana_task_template({{asana_task_template}})
+  - name: Opp {{title_prefix}} - Cloning asana_task_template({{asana_task_template}})
     uri:
       url: "{{ asana_api }}/tasks/{{asana_task_template}}/duplicate"
       headers:
@@ -66,26 +54,41 @@
       body_format: json
       validate_certs: "{{ validate_certs }}"
       status_code: 200,201
+    when: tsk_gid == ''
     register: cloned_task
 
   # Set  to the newly cloned task
-  - name: Opp[{{opp_number}}]-({{csv_index}}/{{num_ops}})-Set tsk_gid of new task
+  - name: Opp {{title_prefix}} - Set tsk_gid of new task
     set_fact:
       tsk_gid: "{{cloned_task.json.data.new_task.gid}}"
-  when: tsk_gid == 'empty'
+  when: tsk_gid == ''
 
 - debug:
     var: tsk_gid
 
+# Match the gid of the asana Opportunity Type (Renewal, Net New, TechnicalWin)
+# RFE: Look through project_tasks for the gid to make this more dynamic
+- block:
+  - name: Opp {{title_prefix}} - Set asana_opp_type({{opp_record_type}})
+    set_fact:
+      asana_opp_type: "{{asana_opp_types[opp_record_type]}}"
+  rescue:
+    - name: Opp {{title_prefix}} - Set asana_opp_type to (TechnicalWin)
+      set_fact:
+        asana_opp_type: "{{asana_opp_types['TechnicalWin']}}"
+
+- debug:
+    var: asana_opp_type
+
 # Match the gid of the asana section (Commit, Best Case, Pipeline, else TechnicalWins)
 # RFE: Look through project_tasks for the gid to make this more dynamic
 - block:
-  - name: Opp[{{opp_number}}]-({{csv_index}}/{{num_ops}})-Set section_gid to forecast_category({{forecast_category}})
+  - name: Opp {{title_prefix}} - Set section_gid to forecast_category({{forecast_category}})
     set_fact:
       section_gid: "{{asana_sections[forecast_category]}}"
     failed_when: (tech_win_date != '')
   rescue:
-    - name: Opp({{opp_number}})-Set section_gid to (TechnicalWins)
+    - name: Opp {{title_prefix}} - Set section_gid to (TechnicalWins)
       set_fact:
         section_gid: "{{asana_sections['TechnicalWins']}}"
         techwon: true # set to true since it is not an active opp
@@ -93,12 +96,12 @@
 - debug:
       var: section_gid
 
-- name: Opp[{{opp_number}}]-({{csv_index}}/{{num_ops}})-TechnicalWin?
+- name: Opp {{title_prefix}} - TechnicalWin?
   debug:
     var: techwon
 
 # Move the task to the appropriate asana section (Commit, Best Case, Pipeline, else TechnicalWins)
-- name: Opp[{{opp_number}}]-({{csv_index}}/{{num_ops}})-Move task to the appropriate section
+- name: Opp {{title_prefix}} - Move task to the appropriate section
   uri:
     url: "{{ asana_api }}/sections/{{section_gid}}/addTask"
     headers:
@@ -114,7 +117,7 @@
 
 # Match the gid of the asana Fiscal Quarters (Q1, Q2, Q3, Q4)
 # RFE: Look through project_tasks for the gid to make this more dynamic
-- name: Opp[{{opp_number}}]-({{csv_index}}/{{num_ops}})-Set fiscal_quarter({{fiscal_quarter}})
+- name: Opp {{title_prefix}} - Set fiscal_quarter({{fiscal_quarter}})
   set_fact:
     asana_fq: "{{asana_fiscal_quarters[fiscal_quarter]}}"
 
@@ -122,7 +125,7 @@
       var: asana_fq
 
 # Update task with notes, custom fields
-- name: Opp[{{opp_number}}]-({{csv_index}}/{{num_ops}})-Update task notes and custom fields
+- name: Opp {{title_prefix}} - Update task notes and custom fields
   uri:
     url: "{{ asana_api }}/tasks/{{tsk_gid}}"
     headers:
@@ -147,6 +150,8 @@
           '1200008973756201': "{{asana_fq}}" # Fiscal Quarter (Global)
           '1200046075857084': "{{asana_opp_type}}" # OpportunityType (Global)
         due_on: "{{close_date}}" # close_date
+        # reset the task name
+        name: "{{customer_name}}|{{opp_number}}|{{opp_name}}"
         notes: |
           Opportunity Owner - "{{opp_owner}}"
           Opportunity Number - "{{opp_number}}"
@@ -165,7 +170,7 @@
 
 # Lopp through the normalized products and apply product_tags
 # RFE: Look through project_tasks for the gid to make this more dynamic
-- name: Opp[{{opp_number}}]-({{csv_index}}/{{num_ops}})-Adding products({{products}}) to task
+- name: Opp {{title_prefix}} - Adding products({{products}}) to task
   uri:
     url: "{{ asana_api }}/tasks/{{tsk_gid}}/addTag"
     headers:

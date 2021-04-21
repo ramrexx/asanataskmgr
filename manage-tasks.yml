@@ -166,6 +166,7 @@
     body_format: json
     validate_certs: "{{ validate_certs }}"
     status_code: 200,201
+  ignore_errors: true
   register: update_task
 
 # Lopp through the normalized products and apply product_tags

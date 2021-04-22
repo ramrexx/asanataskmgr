@@ -154,7 +154,6 @@
         name: "{{customer_name}}|{{opp_number}}|{{opp_name}}"
         notes: |
           Opportunity Owner - "{{opp_owner}}"
-          Opportunity Number - "{{opp_number}}"
           Opportunity Record Type - "{{opp_record_type}}"
           Created Date - "{{created_date}}"
 
@@ -162,7 +161,7 @@
           "{{next_step}}"
 
           Description:
-          "{{description}}"
+          "{{description|truncate(1024,True)}}"
     body_format: json
     validate_certs: "{{ validate_certs }}"
     status_code: 200,201

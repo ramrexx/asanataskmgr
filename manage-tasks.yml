@@ -1,7 +1,7 @@
 - set_fact:
     tsk_gid: ''
     techwon: false
-    title_prefix: "({{customer_name}}) - ({{opp_number}}) - ({{csv_index}}/{{num_ops}})"
+    title_prefix: "({{customer_name}}) - ({{opp_number}}) - ({{csv_index+1}}/{{num_ops}})"
 
 # Loop through project_tasks looking for a matching task name that contains the opportunity number
 - name: Opp {{title_prefix}} - Check to see if the task already exists

@@ -1,6 +1,5 @@
 - set_fact:
     tsk_gid: ''
-    techwon: false
     title_prefix: "({{customer_name}}) - ({{opp_number}}) - ({{csv_index+1}}/{{num_ops}})"
 
 # Loop through project_tasks looking for a matching task name that contains the opportunity number
@@ -57,7 +56,7 @@
     when: tsk_gid == ''
     register: cloned_task
 
-  # Set  to the newly cloned task
+  # Set tsk_gid to the newly cloned task
   - name: Opp {{title_prefix}} - Set tsk_gid of new task
     set_fact:
       tsk_gid: "{{cloned_task.json.data.new_task.gid}}"
@@ -67,38 +66,28 @@
     var: tsk_gid
 
 # Match the gid of the asana Opportunity Type (Renewal, Net New, TechnicalWin)
-# RFE: Look through project_tasks for the gid to make this more dynamic
+# RFE: Look through project_details for the gid to make this more dynamic
 - block:
   - name: Opp {{title_prefix}} - Set asana_opp_type({{opp_record_type}})
     set_fact:
-      asana_opp_type: "{{asana_opp_types[opp_record_type]}}"
+      asana_opp_type: "{{ asana_opp_types[opp_record_type] }}"
+    failed_when: tech_win_date != ''
   rescue:
-    - name: Opp {{title_prefix}} - Set asana_opp_type to (TechnicalWin)
+    - name: Opp {{title_prefix}} - Set asana_opp_type to TechnicalWin
       set_fact:
-        asana_opp_type: "{{asana_opp_types['TechnicalWin']}}"
+        asana_opp_type: "{{ asana_opp_types['TechnicalWin'] }}"
 
 - debug:
-    var: asana_opp_type
+    msg: "asana_opp_type: {{asana_opp_type}}, tech_win_date: {{tech_win_date}}"
 
-# Match the gid of the asana section (Commit, Best Case, Pipeline, else TechnicalWins)
-# RFE: Look through project_tasks for the gid to make this more dynamic
-- block:
-  - name: Opp {{title_prefix}} - Set section_gid to forecast_category({{forecast_category}})
-    set_fact:
-      section_gid: "{{asana_sections[forecast_category]}}"
-    failed_when: (tech_win_date != '')
-  rescue:
-    - name: Opp {{title_prefix}} - Set section_gid to (TechnicalWins)
-      set_fact:
-        section_gid: "{{asana_sections['TechnicalWins']}}"
-        techwon: true # set to true since it is not an active opp
+# Match the gid of the asana section (Commit, Best Case, Pipeline, Closed)
+# RFE: Look through project_details for the gid to make this more dynamic
+- name: Opp {{title_prefix}} - Set section_gid to forecast_category({{forecast_category}})
+  set_fact:
+    section_gid: "{{asana_sections[forecast_category]}}"
 
 - debug:
-      var: section_gid
-
-- name: Opp {{title_prefix}} - TechnicalWin?
-  debug:
-    var: techwon
+    var: section_gid
 
 # Move the task to the appropriate asana section (Commit, Best Case, Pipeline, else TechnicalWins)
 - name: Opp {{title_prefix}} - Move task to the appropriate section
@@ -116,13 +105,22 @@
   register: addtask_to_section
 
 # Match the gid of the asana Fiscal Quarters (Q1, Q2, Q3, Q4)
-# RFE: Look through project_tasks for the gid to make this more dynamic
+# RFE: Look through project_details for the gid to make this more dynamic
 - name: Opp {{title_prefix}} - Set fiscal_quarter({{fiscal_quarter}})
   set_fact:
     asana_fq: "{{asana_fiscal_quarters[fiscal_quarter]}}"
 
 - debug:
       var: asana_fq
+
+# Match the gid of the asana ForecastCategory (Commit, Best Case, Pipeline, Closed)
+# RFE: Look through project_details for the gid to make this more dynamic
+- name: Opp {{title_prefix}} - Set forecast_category({{forecast_category}})
+  set_fact:
+    asana_fc: "{{forecast_categories[forecast_category]}}"
+
+- debug:
+      var: asana_fc
 
 # Update task with notes, custom fields
 - name: Opp {{title_prefix}} - Update task notes and custom fields
@@ -133,7 +131,7 @@
     method: PUT
     body:
       data:
-        completed: "{{techwon | bool}}"
+        completed: "{{ (forecast_category=='Closed') | ternary(true,false) }}"
         custom_fields:
           # custom text fields
           '1182531335993465': "{{opp_owner}}" # AE (Global)
@@ -149,13 +147,13 @@
           # custom dropdown field names
           '1200008973756201': "{{asana_fq}}" # Fiscal Quarter (Global)
           '1200046075857084': "{{asana_opp_type}}" # OpportunityType (Global)
+          '1200235633617549': "{{asana_fc}}" # ForecastCategory (Global)
         due_on: "{{close_date}}" # close_date
-        # reset the task name
+        # reset the task name in case it was changed
         name: "{{customer_name}}|{{opp_number}}|{{opp_name}}"
         notes: |
           Opportunity Owner - "{{opp_owner}}"
           Opportunity Record Type - "{{opp_record_type}}"
-          Created Date - "{{created_date}}"
 
           Next Step
           "{{next_step}}"

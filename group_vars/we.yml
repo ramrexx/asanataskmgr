@@ -1,16 +1,16 @@
 asana_project_name: WE TechOps
 csv_file: ~/we-sfdcopps.csv
 
-# task gids are unique to a region / project
+# project task gids are unique to a region / project
 asana_template_tasks:
   'Renewal': '1200136955758872' # TMP-RENEWAL
   'Overlay Credit': '1200136955758872' # TMP-RENEWAL
   'NA Sales Opportunity': '1200136955758875' # TMP-NETNEW
   'inactive': '1200169324941159' # TMP-INACTIVE
 
-# section gids are unique to a region / project
+# project section gids are unique to a region / project
 asana_sections:
   'Commit': '1200113936496349'
   'Best Case': '1200113936496352'
   'Pipeline': '1200113936496355'
-  'TechnicalWins': '1200142386422437'
+  'Closed': '1200142386422437'

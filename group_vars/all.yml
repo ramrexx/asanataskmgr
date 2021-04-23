@@ -24,3 +24,10 @@ product_tags:
   'Middleware': '1200127522373785'
   'CloudPlatform': '1200127522373786'
   'Management': '1200127522373787'
+
+# custom field ForecastCategory is global
+forecast_categories: # 1200235633617549
+  'Commit': '1200235633617555'
+  'Best Case': '1200235633617567'
+  'Pipeline': '1200235633617577'
+  'Closed': '1200235633617583'

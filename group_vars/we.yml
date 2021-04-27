@@ -1,4 +1,4 @@
-asana_project_name: WE TechOps
+project_gid: 1200113936496346
 csv_file: ~/we-sfdcopps.csv
 
 # project task gids are unique to a region / project

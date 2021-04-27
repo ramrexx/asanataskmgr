@@ -6,8 +6,9 @@ validate_certs: false
 asana_opp_types: # 1200046075857084
   'Renewal': '1200046075857157'
   'NA Sales Opportunity': '1200046075857089'
-  'TechnicalWin': '1200172396491648'
-  'Overlay Credit': '1200046075857157'
+  'Other': '1200172396491648'
+  'Overlay Credit': '1200248826301713'
+  'Booked Opp Process': '1200248826301714'
 
 # custom field Fiscal Quarter is global
 asana_fiscal_quarters: # 1200008973756201

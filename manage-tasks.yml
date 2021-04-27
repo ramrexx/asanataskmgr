@@ -65,20 +65,19 @@
 - debug:
     var: tsk_gid
 
-# Match the gid of the asana Opportunity Type (Renewal, Net New, TechnicalWin)
+# Match the gid of the asana Opportunity Type (Renewal, Net New, Other, etc)
 # RFE: Look through project_details for the gid to make this more dynamic
 - block:
   - name: Opp {{title_prefix}} - Set asana_opp_type({{opp_record_type}})
     set_fact:
       asana_opp_type: "{{ asana_opp_types[opp_record_type] }}"
-    failed_when: tech_win_date != ''
   rescue:
-    - name: Opp {{title_prefix}} - Set asana_opp_type to TechnicalWin
+    - name: Opp {{title_prefix}} - Set asana_opp_type to Other
       set_fact:
-        asana_opp_type: "{{ asana_opp_types['TechnicalWin'] }}"
+        asana_opp_type: "{{ asana_opp_types['Other'] }}"
 
 - debug:
-    msg: "asana_opp_type: {{asana_opp_type}}, tech_win_date: {{tech_win_date}}"
+    msg: "asana_opp_type: {{asana_opp_type}}"
 
 # Match the gid of the asana section (Commit, Best Case, Pipeline, Closed)
 # RFE: Look through project_details for the gid to make this more dynamic
@@ -89,7 +88,7 @@
 - debug:
     var: section_gid
 
-# Move the task to the appropriate asana section (Commit, Best Case, Pipeline, else TechnicalWins)
+# Move the task to the appropriate asana section (Commit, Best Case, Pipeline, else Closed)
 - name: Opp {{title_prefix}} - Move task to the appropriate section
   uri:
     url: "{{ asana_api }}/sections/{{section_gid}}/addTask"
@@ -153,9 +152,8 @@
         name: "{{customer_name}}|{{opp_number}}|{{opp_name}}"
         notes: |
           Opportunity Owner - "{{opp_owner}}"
-          Opportunity Record Type - "{{opp_record_type}}"
 
-          Next Step
+          Next Step:
           "{{next_step}}"
 
           Description:

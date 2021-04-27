@@ -7,7 +7,6 @@
     - group_vars/all.yml
     - "group_vars/{{region}}.yml"
 
-  # Run these pre_tasks to reduce the amount of api calls
   pre_tasks:
     - name: Read csv file and return a dict
       community.general.read_csv:

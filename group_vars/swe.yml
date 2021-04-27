@@ -1,16 +1,16 @@
-project_gid: 1200192032022777
-csv_file: ~/nwe-sfdcopps.csv
+project_gid: 1200256428164177
+csv_file: ~/swe-sfdcopps.csv
 
 # project task gids are unique to a region / project
 asana_template_tasks:
-  'Renewal': '1200192032022787' # TMP-RENEWAL
-  'Overlay Credit': '1200192032022787' # TMP-RENEWAL
-  'NA Sales Opportunity': '1200192032022785' # TMP-NETNEW
-  'inactive': '1200192032022783' # TMP-INACTIVE
+  'Renewal': '1200256428164187' # TMP-RENEWAL
+  'Overlay Credit': '1200256428164187' # TMP-RENEWAL
+  'NA Sales Opportunity': '1200256428164185' # TMP-NETNEW
+  'inactive': '1200256428164183' # TMP-INACTIVE
 
 # project section gids are unique to a region / project
 asana_sections:
-  'Commit': '1200192032022778'
-  'Best Case': '1200192032022779'
-  'Pipeline': '1200192032022780'
-  'Closed': '1200192032022781'
+  'Commit': '1200256428164178'
+  'Best Case': '1200256428164179'
+  'Pipeline': '1200256428164180'
+  'Closed': '1200256428164181'

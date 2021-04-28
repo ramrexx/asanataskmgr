@@ -2,6 +2,8 @@
 asana_api: https://app.asana.com/api/1.0
 validate_certs: false
 
+# asana_token: Bearer 1/xxxxxxxxxxxxxxxx:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 # custom field OpportunityType is global
 asana_opp_types: # 1200046075857084
   'Renewal': '1200046075857157'

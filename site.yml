@@ -64,4 +64,4 @@
       # count number of opportunities processed
     - name: Play Summary
       debug:
-        msg: "Processed {{csvopps.list|count}} opps from ({{csv_file}})"
+        msg: "Processed {{csvopps.list|count}} opps"

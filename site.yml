@@ -8,19 +8,8 @@
     - "group_vars/{{region}}.yml"
 
   pre_tasks:
-    - name: Read csv file and return a dict
-      community.general.read_csv:
-        path: "{{csv_file}}"
-        skipinitialspace: true
-        strict: false
-      register: csvopps
-      delegate_to: localhost
-
     - set_fact:
         num_ops: "{{ csvopps.list|count }}"
-
-    - name: Include vaulted asana_token
-      include_vars: ~/asana-vault.yml
 
   tasks:
     - name: Log project_gid

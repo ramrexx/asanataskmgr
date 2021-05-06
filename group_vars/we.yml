@@ -1,5 +1,5 @@
 project_gid: 1200113936496346
-csv_file: 
+csv_file:
 
 # project task gids are unique to a region / project
 asana_template_tasks:
@@ -14,3 +14,4 @@ asana_sections:
   'Best Case': '1200113936496352'
   'Pipeline': '1200113936496355'
   'Closed': '1200142386422437'
+  'Omitted': '1200260408982400'

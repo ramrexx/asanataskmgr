@@ -130,7 +130,7 @@
     method: PUT
     body:
       data:
-        completed: "{{ (forecast_category=='Closed') | ternary(true,false) }}"
+        completed: "{{ (forecast_category=='Closed'||forecast_category=='Omitted') | ternary(true,false) }}"
         custom_fields:
           # custom text fields
           '1182531335993465': "{{opp_owner}}" # AE (Global)

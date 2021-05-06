@@ -152,7 +152,7 @@
         name: "{{customer_name}}|{{opp_number}}|{{opp_name}}"
         notes: |
           Opportunity Owner - "{{opp_owner}}"
-          Reason: "{{ (forecast_category=='Omitted') | ternary(reason,'') }}"
+          Reason: "{{ reason }}"
 
           Next Step:
           "{{next_step}}"

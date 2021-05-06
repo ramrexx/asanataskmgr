@@ -157,14 +157,14 @@
         # reset the task name in case it was changed
         name: "{{customer_name}}|{{opp_number}}|{{opp_name}}"
         notes: |
-          Opportunity Owner - "{{opp_owner}}"
-          Reason: "{{reason1}} ... {{reason2}}"
+          Opportunity Owner - {{opp_owner}}
+          Reason: {{reason1}} ... {{reason2}}
 
           Next Step:
-          "{{next_step}}"
+          {{next_step}}
 
           Description:
-          "{{description|truncate(1024,True)}}"
+          {{description|truncate(1024,True)}}
     body_format: json
     validate_certs: "{{ validate_certs }}"
     status_code: 200,201

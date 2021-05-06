@@ -178,6 +178,7 @@
     body_format: json
     validate_certs: "{{ validate_certs }}"
     status_code: 200,201
+  ignore_errors: true
   register: add_tags
   loop: "{{products.split('|')}}"
   loop_control:

@@ -1,0 +1,18 @@
+project_gid: 1200113936496346
+csv_file:
+
+# project task gids are unique to a region / project
+asana_template_tasks:
+  default_task: '1200303963606230' # TMP-TASK
+
+# project section gids are unique to a region / project
+asana_sections:
+  'Fixme': '1200291243594294' # Multi-Select / Needs Attention
+  'NAC  Windows Automation': '1200113936496349'
+  'NAC  Cloud Native Development': '1200291243594283'
+  'BDM  Automation': '1200291243594284'
+  'NAC  Network Automation': '1200291243594285'
+  'NAC  Business Optimization': '1200291243594286'
+  'BDM  Customer Engagement Hub': '1200291243594288'
+  'BDM  AI/ML and Analytics': '1200291243594289'
+  'NAC  Security Automation': '1200291243594290'

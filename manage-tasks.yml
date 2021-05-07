@@ -14,17 +14,11 @@
     var: tsk_gid
   when: tsk_gid != ''
 
-# Match the gid of the asana templates to clone (TMP-RENEWAL, TMP-NETNEW, and TMP-INACTIVE)
-# RFE: Look through project_tasks for the gid to make this more dynamic
-- block:
-  - name: Opp {{title_prefix}} - Set asana_task_template({{opp_record_type}})
-    set_fact:
-      asana_task_template: "{{asana_template_tasks[opp_record_type]}}"
-    when: tsk_gid == ''
-  rescue:
-    - name: Opp {{title_prefix}} - Set asana_task_template to (inactive)
-      set_fact:
-        asana_task_template: "{{asana_template_tasks['inactive']}}"
+# Match the gid of the asana templates to clone (TBD)
+- name: Opp {{title_prefix}} - Set asana_task_template
+  set_fact:
+    asana_task_template: "{{asana_template_tasks[default_task]}}"
+  when: tsk_gid == ''
 
 - debug:
     var: asana_task_template
@@ -50,7 +44,7 @@
           - subtasks
           - notes
           - tags
-          name: "{{customer_name}}|{{opp_number}}|{{opp_name}}"
+          name: "{{opp_number}} - {{customer_name}} - {{opp_name}}"
       body_format: json
       validate_certs: "{{ validate_certs }}"
       status_code: 200,201
@@ -81,10 +75,14 @@
     msg: "asana_opp_type: {{asana_opp_type}}"
 
 # Match the gid of the asana section (Commit, Best Case, Pipeline, Closed)
-# RFE: Look through project_details for the gid to make this more dynamic
-- name: Opp {{title_prefix}} - Set section_gid to forecast_category({{forecast_category}})
-  set_fact:
-    section_gid: "{{asana_sections[forecast_category]}}"
+- block:
+  - name: Opp {{title_prefix}} - Set section_gid to forecast_category({{forecast_category}})
+    set_fact:
+      section_gid: "{{asana_sections[programs]}}"
+  rescue:
+    - name: Opp {{title_prefix}} - Set asana_opp_type to Multi-Select / Needs Attention
+      set_fact:
+        section_gid: "{{ asana_sections['Fixme'] }}"
 
 - debug:
     var: section_gid
@@ -104,8 +102,7 @@
     status_code: 200
   register: addtask_to_section
 
-# Match the gid of the asana Fiscal Quarters (Q1, Q2, Q3, Q4)
-# RFE: Look through project_details for the gid to make this more dynamic
+# Match the gid of the Fiscal Quarters (Q1, Q2, Q3, Q4)
 - name: Opp {{title_prefix}} - Set fiscal_quarter({{fiscal_quarter}})
   set_fact:
     asana_fq: "{{asana_fiscal_quarters[fiscal_quarter]}}"
@@ -113,8 +110,7 @@
 - debug:
       var: asana_fq
 
-# Match the gid of the asana ForecastCategory (Commit, Best Case, Pipeline, Closed)
-# RFE: Look through project_details for the gid to make this more dynamic
+# Match the gid of the ForecastCategory (Commit, Best Case, Pipeline, Closed)
 - name: Opp {{title_prefix}} - Set forecast_category({{forecast_category}})
   set_fact:
     asana_fc: "{{forecast_categories[forecast_category]}}"
@@ -122,10 +118,30 @@
 - debug:
       var: asana_fc
 
-- name: Opp {{title_prefix}} - Check opp for closed condition
+# Match the gid of the Stage
+- name: Opp {{title_prefix}} - Set forecast_category({{stage}})
   set_fact:
-    completed_opp: true
-  when: forecast_category=='Closed' or forecast_category=='Omitted'
+    asana_stage: "{{sfdc_stages[stage]}}"
+
+- debug:
+      var: asana_stage
+
+# Match the gid of the nac region
+- name: Opp {{title_prefix}} - Set subregion({{subregion}})
+  set_fact:
+    asana_nac_region: "{{nac_subregions[subregion]}}"
+
+- debug:
+      var: asana_subregion
+
+
+# Match the gid of the nac subregion
+- name: Opp {{title_prefix}} - Set subregion({{subregion}})
+  set_fact:
+    asana_subregion: "{{nac_subregions[subregion]}}"
+
+- debug:
+      var: asana_subregion
 
 # Update task with notes, custom fields
 - name: Opp {{title_prefix}} - Update task notes and custom fields
@@ -136,30 +152,28 @@
     method: PUT
     body:
       data:
-        completed: "{{completed_opp}}"
         custom_fields:
           # custom text fields
-          '1182531335993465': "{{opp_owner}}" # AE (Global)
-          '1195217282482432': "{{opp_number}}" # Opportunity Number (Global)
-          '1200113936496375': "https://redhat.my.salesforce.com/{{opp_id}}" # SFDC Link (Global)
-          '1200114261516681': "{{tb}}" # TB (Global)
-          '1200038584667544': "{{syb}}" # SYB (Global)
-          '1200176345337880': "{{tech_win_date}}" # Technical Win Date (Global)
-          '1200204527019766': "{{reseller}}" # Channel (Global)
-          '1200204611344740': "{{distributor}}" # Distributor (Global)
-          '1200204672011254': "{{leadsource}}" # LeadSource (Global)
-          '1200204527686759': "{{channel}}" # Channel (Global)
+          '1182531335993465': "{{ opp_owner }}" # AE (Global)
+          '1195217282482432': "{{ opp_number }}" # Opportunity Number (Global)
+          '1200113936496375': "https://redhat.my.salesforce.com/{{ opp_id }}" # SFDC Link (Global)
+          '1200114261516681': "{{ tb }}" # TB (Global)
+          '1200038584667544': "{{ syb }}" # SYB (Global)
+          '1200291243594269': "{{ asana_stage }}" # SFDC Stage (Global)
+          '1200204527019766': "{{ reseller }}" # Reseller (Global)
+          '1200291243594213': "{{ asana_nac_region }}" # NAC Region (Global)
+          '1200244002339995': "{{ asana_subregion }}" # NAC Subregion (Global)
+          '1200291243594278': "{{ probability }}" # probability (Global)
           # custom dropdown field names
-          '1200008973756201': "{{asana_fq}}" # Fiscal Quarter (Global)
-          '1200046075857084': "{{asana_opp_type}}" # OpportunityType (Global)
-          '1200235633617549': "{{asana_fc}}" # ForecastCategory (Global)
-        due_on: "{{close_date}}" # close_date
+          '1200008973756201': "{{ asana_fq }}" # Fiscal Quarter (Global)
+          '1200235633617549': "{{ asana_fc }}" # ForecastCategory (Global)
+        start_on: "{{ start_date }}" # start date
+        due_on: "{{ close_date }}" # close date
         # reset the task name in case it was changed
-        name: "{{customer_name}}|{{opp_number}}|{{opp_name}}"
+        name: "{{ opp_number }} - {{ customer_name }} - {{ opp_name }}"
         notes: |
-          Opportunity Owner: {{opp_owner}}
-          Reason: ({{reason1}} {{reason2}})
-
+          Opportunity Owner: {{ opp_owner }}
+          Product Details: {{ product_detail }}
           Next Step:
           {{next_step}}
 

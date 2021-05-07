@@ -8,8 +8,19 @@
     - "group_vars/{{region}}.yml"
 
   pre_tasks:
+    - name: Read csv file and return a dict
+      community.general.read_csv:
+        path: "{{csv_file}}"
+        skipinitialspace: true
+        strict: false
+      register: csvopps
+      delegate_to: localhost
+
     - set_fact:
         num_ops: "{{ csvopps.list|count }}"
+
+    - name: Include vaulted asana_token
+      include_vars: ~/asana-vault.yml
 
   tasks:
     - name: Log project_gid
@@ -34,6 +45,7 @@
       failed_when: project_tasks is not defined
 
     - name: Convert dict to list and Loop through each item
+      no_log: true
       include_tasks: manage-tasks.yml
       vars:
         products: "{{ csv_item['Products'] }}"
@@ -51,8 +63,9 @@
         fiscal_period: "{{ csv_item['Fiscal Period'] }}"
         close_date: "{{ csv_item['Close Date'] }}"
         forecast_category: "{{ csv_item['Forecast Category'] }}"
+        fiscal_quarter: "{{ csv_item['Fiscal Quarter'] }}"
         stage: "{{ csv_item['Stage'] }}"
-        probability: "{{ csv_item['Probability'] }}"
+        probability: "{{ csv_item['Probability (%)'] }}"
         reseller: "{{ csv_item['Reseller'] }}"
         next_step: "{{ csv_item['Next Step'] }}"
         opp_id: "{{ csv_item['Opportunity ID'] }}"

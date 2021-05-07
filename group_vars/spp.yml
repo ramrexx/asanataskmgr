@@ -1,5 +1,5 @@
-project_gid: 1200113936496346
-csv_file:
+project_gid: 1200291243594186
+csv_file: ~/spp.csv
 
 # project task gids are unique to a region / project
 asana_template_tasks:

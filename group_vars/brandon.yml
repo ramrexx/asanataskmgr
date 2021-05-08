@@ -1,0 +1,19 @@
+project_gid: 1200303766352149 
+csv_file: ~/bm-sfdcopps.csv
+
+# project task gids are unique to a region / project
+asana_template_tasks:
+  'Renewal': '1200304519809072' # TMP-RENEWAL
+  'Overlay Credit': '1200304519809072' # TMP-RENEWAL
+  'NA Sales Opportunity': '1200304577657791' # TMP-NETNEW
+  'inactive': '1200304491673571' # TMP-INACTIVE
+
+# project section gids are unique to a region / project
+asana_sections:
+  'Commit': '1200304491657080'
+  'Best Case': '1200304491666954'
+  'Pipeline': '1200304491668152'
+  'Closed': '1200304491671219'
+
+
+workspace: 842652237098

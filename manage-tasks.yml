@@ -13,8 +13,7 @@
 
 - name: Opp {{ title_prefix }} - print tsk_gid
   debug:
-    var: tsk_gid
-    verbosity: 2
+    msg: "Existing task found: {{ tsk_gid }}"
   when: tsk_gid != ""
 
 # Match the gid of the asana templates to clone (TMP-RENEWAL, TMP-NETNEW, and TMP-INACTIVE)

@@ -1,6 +1,6 @@
 - name: Reset variables
   set_fact:
-    tsk_gid: 0
+    tsk_gid: ''
     batch_data: []
     title_prefix: "({{ customer_name }}) - ({{ opp_number }}) - ({{ csv_index+1 }}/{{ num_ops }})"
 
@@ -13,7 +13,8 @@
 
 - name: Opp {{ title_prefix }} - print tsk_gid
   debug:
-    msg: "Existing task found: {{ tsk_gid }}"
+    var: "Existing task found: {{ tsk_gid }}"
+  when: tsk_gid != ''
 
 # Match the gid of the asana templates to clone (TMP-RENEWAL, TMP-NETNEW, and TMP-INACTIVE)
 - name: Opp {{ title_prefix }} - match the gid for the Asana template to clone
@@ -21,7 +22,7 @@
   - name: Opp {{ title_prefix }} - set asana_task_template({{ opp_record_type }})
     set_fact:
       asana_task_template: "{{ asana_template_tasks[opp_record_type] }}"
-    when: tsk_gid == 0
+    when: tsk_gid == ''
   rescue:
     - name: Opp {{ title_prefix }} - set asana_task_template to (inactive)
       set_fact:
@@ -31,7 +32,7 @@
   debug:
     var: asana_task_template
     verbosity: 2
-  when: tsk_gid == 0
+  when: tsk_gid == ''
 
 # Clone the asana_task_template with all of the subtasks preloaded
 - name: Opp {{ title_prefix }} - cloning asana_task_template({{ asana_task_template }})
@@ -56,14 +57,14 @@
     body_format: json
     validate_certs: "{{ validate_certs }}"
     status_code: 200,201
-  when: tsk_gid == 0
+  when: tsk_gid == ''
   register: cloned_task
 
 # Set tsk_gid to the newly cloned task
 - name: Opp {{ title_prefix }} - set tsk_gid of new task
   set_fact:
     tsk_gid: "{{ cloned_task.json.data.new_task.gid }}"
-  when: tsk_gid == 0
+  when: tsk_gid == ''
 
 - name: Opp {{ title_prefix }} - print tsk_gid
   debug:

@@ -17,16 +17,22 @@
         var: project_gid
       failed_when: project_gid is not defined
 
-    - name: Get a list of tasks in a project ({{asana_project_name}})
+    - name: Get a list of tasks in a project ({{ project_gid }})
       uri:
         url: "{{ asana_api }}/projects/{{project_gid}}/tasks"
         headers:
           Content-Type: application/json
-          Authorization: "{{asana_token}}"
+          Authorization: "{{ asana_token }}"
         method: GET
         validate_certs: "{{ validate_certs }}"
         status_code: 200
       register: project_tasks
+
+    - name: Log project_tasks
+      debug:
+        var: project_tasks
+        verbosity: 2
+      failed_when: project_tasks is not defined
 
     - name: Count number of tasks found
       debug:
@@ -67,4 +73,4 @@
       # count number of opportunities processed
     - name: Play Summary
       debug:
-        msg: "Processed {{csvopps.list|count}} opps"
+        msg: "Processed {{ csvopps.list|count }} opps"

@@ -7,7 +7,7 @@
 # Loop through project_tasks looking for a matching task name that contains the opportunity number
 - name: Opp {{ title_prefix }} - check to see if the task already exists
   vars:
-    _query: "[?contains(name, '{{ opp_number }} ')].gid | [0]"
+    _query: "[?contains(name, '{{ opp_number }}')].gid | [0]"
   set_fact:
     tsk_gid: "{{ project_tasks.json.data | to_json | from_json | json_query(_query) }}"
 
@@ -15,6 +15,9 @@
   debug:
     var: "Existing task found: {{ tsk_gid }}"
   when: tsk_gid | int > 0
+
+  fail:
+    msg: "Bomb!"
 
 # Match the gid of the asana templates to clone (TMP-RENEWAL, TMP-NETNEW, and TMP-INACTIVE)
 - name: Opp {{ title_prefix }} - match the gid for the Asana template to clone
@@ -160,7 +163,7 @@
           {{ next_step }}
 
           Description:
-          {{ description }}
+          {{ description | truncate(1024,True) }}
 
 - name: Opp {{ title_prefix }} - add appropriate section data to batch data
   set_fact:

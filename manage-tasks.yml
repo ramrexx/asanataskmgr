@@ -16,9 +16,6 @@
     var: "Existing task found: {{ tsk_gid }}"
   when: tsk_gid | int > 0
 
-  fail:
-    msg: "Bomb!"
-
 # Match the gid of the asana templates to clone (TMP-RENEWAL, TMP-NETNEW, and TMP-INACTIVE)
 - name: Opp {{ title_prefix }} - match the gid for the Asana template to clone
   block:
@@ -167,15 +164,15 @@
 
 - name: Opp {{ title_prefix }} - add appropriate section data to batch data
   set_fact:
-    batch_data: "{{ batch_data | default([]) + [{'relative_path':'/sections/' + section_gid + '/addTask', 'method':'POST', 'data': {'task': tsk_gid} } ] }}"
+    batch_data: "{{ batch_data + [{'relative_path':'/sections/' + section_gid + '/addTask', 'method':'POST', 'data': {'task': tsk_gid} } ] }}"
 
 - name: Opp {{ title_prefix }} - add opp updates to batch data
   set_fact:
-    batch_data: "{{ batch_data | default([]) + [{'relative_path':'/tasks/' + tsk_gid + '', 'method':'PUT', 'data': update_tasks_data } ] }}"
+    batch_data: "{{ batch_data + [{'relative_path':'/tasks/' + tsk_gid + '', 'method':'PUT', 'data': update_tasks_data } ] }}"
 
 - name: Opp {{ title_prefix }} - add tag updates to batch data
   set_fact:
-    batch_data: "{{ batch_data | default([]) + [{'relative_path':'/tasks/' + tsk_gid + '/addTag', 'method':'POST', 'data':{'tag': product_tags[pt] }}] }}"
+    batch_data: "{{ batch_data + [{'relative_path':'/tasks/' + tsk_gid + '/addTag', 'method':'POST', 'data':{'tag': product_tags[pt] }}] }}"
   loop: "{{ products.split('|') }}"
   when: pt != 'ERROR'
   loop_control:

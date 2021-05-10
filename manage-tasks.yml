@@ -1,6 +1,6 @@
-- name: Opp {{ title_prefix }} - reset variables
+- name: Reset variables
   set_fact:
-    tsk_gid: ""
+    tsk_gid: 0
     batch_data: []
     title_prefix: "({{ customer_name }}) - ({{ opp_number }}) - ({{ csv_index+1 }}/{{ num_ops }})"
 
@@ -14,7 +14,7 @@
 - name: Opp {{ title_prefix }} - print tsk_gid
   debug:
     msg: "Existing task found: {{ tsk_gid }}"
-  when: tsk_gid != ""
+  when: tsk_gid > 0
 
 # Match the gid of the asana templates to clone (TMP-RENEWAL, TMP-NETNEW, and TMP-INACTIVE)
 - name: Opp {{ title_prefix }} - match the gid for the Asana template to clone
@@ -22,51 +22,49 @@
   - name: Opp {{ title_prefix }} - set asana_task_template({{ opp_record_type }})
     set_fact:
       asana_task_template: "{{ asana_template_tasks[opp_record_type] }}"
-    when: tsk_gid == ""
+    when: tsk_gid == 0
   rescue:
     - name: Opp {{ title_prefix }} - set asana_task_template to (inactive)
       set_fact:
         asana_task_template: "{{ asana_template_tasks['inactive'] }}"
 
-- name: Opp {{ title_prefix }} - print asana_fc
+- name: Opp {{ title_prefix }} - print asana_task_template
   debug:
     var: asana_task_template
     verbosity: 2
-  when: tsk_gid == ""
+  when: tsk_gid == 0
 
 # Clone the asana_task_template with all of the subtasks preloaded
-- name: Opp {{ title_prefix }} - clone Asana Task template for new tasks
-  block:
-  - name: Opp {{ title_prefix }} - cloning asana_task_template({{ asana_task_template }})
-    uri:
-      url: "{{ asana_api }}/tasks/{{ asana_task_template }}/duplicate"
-      headers:
-        Authorization: "{{ asana_token }}"
-      method: POST
-      body:
-        data:
-          include:
-          - attachments
-          - dependencies
-          - notes
-          - assignee
-          - parent
-          - projects
-          - subtasks
-          - notes
-          - tags
-          name: "{{ customer_name }} - {{ opp_number }} - {{ opp_name }}"
-      body_format: json
-      validate_certs: "{{ validate_certs }}"
-      status_code: 200,201
-    when: tsk_gid == ""
-    register: cloned_task
+- name: Opp {{ title_prefix }} - cloning asana_task_template({{ asana_task_template }})
+  uri:
+    url: "{{ asana_api }}/tasks/{{ asana_task_template }}/duplicate"
+    headers:
+      Authorization: "{{ asana_token }}"
+    method: POST
+    body:
+      data:
+        include:
+        - attachments
+        - dependencies
+        - notes
+        - assignee
+        - parent
+        - projects
+        - subtasks
+        - notes
+        - tags
+        name: "{{ customer_name }} - {{ opp_number }} - {{ opp_name }}"
+    body_format: json
+    validate_certs: "{{ validate_certs }}"
+    status_code: 200,201
+  when: tsk_gid == 0
+  register: cloned_task
 
-  # Set tsk_gid to the newly cloned task
-  - name: Opp {{ title_prefix }} - set tsk_gid of new task
-    set_fact:
-      tsk_gid: "{{ cloned_task.json.data.new_task.gid }}"
-  when: tsk_gid == ""
+# Set tsk_gid to the newly cloned task
+- name: Opp {{ title_prefix }} - set tsk_gid of new task
+  set_fact:
+    tsk_gid: "{{ cloned_task.json.data.new_task.gid }}"
+  when: tsk_gid == 0
 
 - name: Opp {{ title_prefix }} - print tsk_gid
   debug:
@@ -77,7 +75,7 @@
 # RFE: Look through project_details for the gid to make this more dynamic
 - name: Opp {{ title_prefix }} - block for setting the Opportunity type
   block:
-  - name: Opp {{ title_prefix }} - bet asana_opp_type({{ opp_record_type }})
+  - name: Opp {{ title_prefix }} - set asana_opp_type({{ opp_record_type }})
     set_fact:
       asana_opp_type: "{{ asana_opp_types[opp_record_type] }}"
   rescue:
@@ -101,14 +99,14 @@
     verbosity: 2
 
 # Match the gid of the asana Fiscal Quarters (Q1, Q2, Q3, Q4)
-- name: Opp {{ title_prefix }} - set fiscal_quarter({{ fiscal_quarter }})
+- name: Opp {{ title_prefix }} - set asana_fq({{ fiscal_quarter }})
   set_fact:
     asana_fq: "{{ asana_fiscal_quarters[fiscal_quarter] }}"
 
 - name: Opp {{ title_prefix }} - print asana_fq
   debug:
-      var: asana_fq
-      verbosity: 2
+    var: asana_fq
+    verbosity: 2
 
 # Match the gid of the asana ForecastCategory (Commit, Best Case, Pipeline, Closed)
 - name: Opp {{ title_prefix }} - set forecast_category({{ forecast_category }})
@@ -117,10 +115,10 @@
 
 - name: Opp {{ title_prefix }} - print asana_fc
   debug:
-      var: asana_fc
-      verbosity: 2
+    var: asana_fc
+    verbosity: 2
 
-# Match the gid of the Stage
+# Match the gid of the Asana Stage
 - name: Opp {{title_prefix}} - set asana_stage({{ stage }})
   set_fact:
     asana_stage: "{{ sfdc_stages[stage] }}"

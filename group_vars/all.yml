@@ -12,6 +12,17 @@ asana_opp_types: # 1200046075857084
   'Overlay Credit': '1200248826301713'
   'Booked Opp Process': '1200248826301714'
 
+# custom field SFDC Stage is global
+sfdc_stages: # 1200291243594269
+  'Validate': '1200291243594270'
+  'Qualify': '1200291243594271'
+  'Engage': '1200291243594272'
+  'Propose': '1200291243594273'
+  'Negotiate': '1200291243594274'
+  'Prepare': '1200291243594275'
+  'Closed Booked': '1200291243594276'
+  'Closed Lost': '1200304649445286'
+  
 # custom field Fiscal Quarter is global
 asana_fiscal_quarters: # 1200008973756201
   'Q1': '1200008973756208'

@@ -51,6 +51,7 @@
         products: "{{ csv_item['Products'] }}"
         syb: "{{ csv_item['1st Year Booking'] }}"
         tb: "{{ csv_item['Total Amount'] }}"
+        stage: "{{ csv_item['Stage'] }}"
         tech_win_date: "{{ csv_item['Technical Win Date'] }}"
         reason1: "{{ csv_item['Reason Closed/Lost'] }}"
         reason2: "{{ csv_item['Reason Won/Lost (Sales Process)'] }}"

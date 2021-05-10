@@ -14,7 +14,10 @@
 - name: Opp {{ title_prefix }} - print tsk_gid
   debug:
     var: "Existing task found: {{ tsk_gid }}"
-  when: tsk_gid | int > 0
+  # when: tsk_gid | int > 0
+
+- fail:
+    msg: "Bomb"
 
 # Match the gid of the asana templates to clone (TMP-RENEWAL, TMP-NETNEW, and TMP-INACTIVE)
 - name: Opp {{ title_prefix }} - match the gid for the Asana template to clone

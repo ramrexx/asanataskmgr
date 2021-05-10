@@ -13,8 +13,8 @@
 
 - name: Opp {{ title_prefix }} - print tsk_gid
   debug:
-    var: "Existing task found: {{ tsk_gid }}"
-  # when: tsk_gid | int > 0
+    msg: "Existing task found: {{ tsk_gid }}"
+  when: tsk_gid > 0
 
 - fail:
     msg: "Bomb"

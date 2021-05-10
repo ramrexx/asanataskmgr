@@ -9,7 +9,7 @@
   vars:
     _query: "[?contains(name, '{{ opp_number }} ')].gid | [0]"
   set_fact:
-    tsk_gid: "{{ project_tasks.json.data | to_json | from_json | json_query(_query) }}"
+    tsk_gid: "{{ project_tasks.json.data | to_json | from_json | json_query(_query) | int }}"
 
 - name: Opp {{ title_prefix }} - print tsk_gid
   debug:

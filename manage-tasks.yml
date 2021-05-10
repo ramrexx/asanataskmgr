@@ -9,12 +9,11 @@
   vars:
     _query: "[?contains(name, '{{ opp_number }} ')].gid | [0]"
   set_fact:
-    tsk_gid: "{{ project_tasks.json.data | to_json | from_json | json_query(_query) | int }}"
+    tsk_gid: "{{ project_tasks.json.data | to_json | from_json | json_query(_query) }}"
 
 - name: Opp {{ title_prefix }} - print tsk_gid
   debug:
     msg: "Existing task found: {{ tsk_gid }}"
-  when: tsk_gid != 0
 
 # Match the gid of the asana templates to clone (TMP-RENEWAL, TMP-NETNEW, and TMP-INACTIVE)
 - name: Opp {{ title_prefix }} - match the gid for the Asana template to clone

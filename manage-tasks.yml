@@ -92,7 +92,6 @@
     verbosity: 2
 
 # Match the gid of the asana section (Commit, Best Case, Pipeline, Closed)
-# RFE: Look through project_details for the gid to make this more dynamic
 - name: Opp {{ title_prefix }} - set section_gid to forecast_category({{ forecast_category }})
   set_fact:
     section_gid: "{{ asana_sections[forecast_category] }}"
@@ -103,7 +102,6 @@
     verbosity: 2
 
 # Match the gid of the asana Fiscal Quarters (Q1, Q2, Q3, Q4)
-# RFE: Look through project_details for the gid to make this more dynamic
 - name: Opp {{ title_prefix }} - set fiscal_quarter({{ fiscal_quarter }})
   set_fact:
     asana_fq: "{{ asana_fiscal_quarters[fiscal_quarter] }}"
@@ -114,7 +112,6 @@
       verbosity: 2
 
 # Match the gid of the asana ForecastCategory (Commit, Best Case, Pipeline, Closed)
-# RFE: Look through project_details for the gid to make this more dynamic
 - name: Opp {{ title_prefix }} - set forecast_category({{ forecast_category }})
   set_fact:
     asana_fc: "{{ forecast_categories[forecast_category] }}"

@@ -1,5 +1,5 @@
 project_gid: 1200262049962005
-csv_file: ~/nws-sfdcopps.csv
+csv_file: 
 
 # project task gids are unique to a region / project
 asana_template_tasks:
@@ -14,4 +14,4 @@ asana_sections:
   'Best Case': '1200262049962007'
   'Pipeline': '1200262049962008'
   'Closed': '1200262049962009'
-  'Omitted': '1200314251775845'  
+  'Omitted': '1200314251775845'

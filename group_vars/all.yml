@@ -22,7 +22,7 @@ sfdc_stages: # 1200291243594269
   'Prepare': '1200291243594275'
   'Closed Booked': '1200291243594276'
   'Closed Lost': '1200304649445286'
-  
+
 # custom field Fiscal Quarter is global
 asana_fiscal_quarters: # 1200008973756201
   'Q1': '1200008973756208'
@@ -46,3 +46,31 @@ forecast_categories: # 1200235633617549
   'Pipeline': '1200235633617577'
   'Closed': '1200235633617583'
   'Omitted': '1200235633617593'
+
+# custom field NAC Subregion is Global
+nac_subregions: # 1200244002339995
+  'Northeast Strategic North': '1200244002340019'
+  'Southwest Strategic': '1200244002340018'
+  'MSO': '1200244002340017'
+  'FSI Canada': '1200244002340016'
+  'Northwest Strategic': '1200244002340015'
+  'South Central': '1200244002340014'
+  'Southeast Consumer Brands': '1200244002340013'
+  'New England Enterprise': '1200244002340012'
+  'Northeast Acquire': '1200244002340011'
+  'Energy': '1200244002340010'
+  'FSI Northeast': '1200244002340009'
+  'Great Lakes': '1200244002340008'
+  'NYMetro Enterprise': '1200244002340007'
+  'Mid Atlantic Enterprise': '1200244002340006'
+  'Northeast Strategic South': '1200244002340005'
+  'Canada East': '1200244002340004'
+  'Canada Public Sector': '1200244002340003'
+  'Canada Enterprise': '1200244002340002'
+  'Chicago': '1200244002340001'
+  'WI-MN': '1200244002340000'
+  'Northwest Enterprise': '1200244002339999'
+  'Southeast Financial': '1200244002339998'
+  'Southeast Enterprise': '1200244002339997'
+  'Mid Central': '1200244002339996'
+  'West Enterprise': '1200304501158631'

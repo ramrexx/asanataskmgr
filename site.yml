@@ -54,7 +54,7 @@
         forecast_category: "{{ csv_item['Forecast Category'] }}"
         fiscal_quarter: "{{ csv_item['Fiscal Quarter'] }}"
         stage: "{{ csv_item['Stage'] }}"
-        probability: "{{ csv_item['Probability (%)'] | int }}"
+        probability: "{{ csv_item['Probability (%)'] }}"
         reseller: "{{ csv_item['Reseller'] }}"
         next_step: "{{ csv_item['Next Step'] }}"
         opp_id: "{{ csv_item['Opportunity ID'] }}"

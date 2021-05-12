@@ -42,7 +42,7 @@
         syb: "{{ csv_item['1st Year Booking'] }}"
         tb: "{{ csv_item['Total Amount'] }}"
         start_date: "{{ csv_item['Start Date'] }}"
-        programs: "{{ csv_item['Programs'] | regex_replace('[^0-9a-zA-Z\\s;]', '') }}"
+        programs: "{{ csv_item['Programs'] | regex_replace('[^0-9a-zA-Z;\\s]', '') }}"
         na_region: "{{ csv_item['Region'] }}"
         subregion: "{{ csv_item['Subregion'] }}"
         opp_number: "{{ csv_item['Opportunity Number'] }}"

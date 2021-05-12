@@ -171,7 +171,6 @@
         '1200113936496375': "https://redhat.my.salesforce.com/{{ opp_id }}" # SFDC Link (Global)
         '1200114261516681': "{{ tb }}" # TB (Global)
         '1200038584667544': "{{ syb }}" # SYB (Global)
-        '1200176345337880': "{{ tech_win_date }}" # Technical Win Date (Global)
         '1200204527019766': "{{ reseller }}" # Channel (Global)
         '1200291243594278': "{{ probability }}" # probability (Global)
         # custom dropdown field names

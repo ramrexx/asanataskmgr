@@ -81,12 +81,12 @@
 - name: Opp {{ title_prefix }} - set section_gid to ({{ programs }})
   set_fact:
     section_gid: "{{ asana_sections[programs] }}"
-  when: "';' not in programs"
+  when: "',' not in programs"
 
 - name: Opp {{ title_prefix }} - set section_gid to (Multi-Select / Needs Attention)
   set_fact:
     section_gid: "{{ asana_sections[Fixme] }}"
-  when: "';' in programs"
+  when: "',' in programs"
 
 - name: Opp {{ title_prefix }} - print section_gid
   debug:

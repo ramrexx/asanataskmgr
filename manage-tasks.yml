@@ -22,7 +22,7 @@
   block:
   - name: Opp {{ title_prefix }} - set asana_task_template
     set_fact:
-      asana_task_template: "{{ asana_template_tasks[default_task] }}"
+      asana_task_template: "{{ asana_template_tasks['default_task'] }}"
     when: tsk_gid | int == 0
   rescue:
     - name: Opp {{ title_prefix }} - set asana_task_template to (inactive)

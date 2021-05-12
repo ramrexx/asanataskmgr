@@ -85,7 +85,7 @@
 
 - name: Opp {{ title_prefix }} - set section_gid to (Multi-Select / Needs Attention)
   set_fact:
-    section_gid: "{{ asana_sections[Fixme] }}"
+    section_gid: "{{ asana_sections['Fixme'] }}"
   when: "',' in programs"
 
 - name: Opp {{ title_prefix }} - print section_gid

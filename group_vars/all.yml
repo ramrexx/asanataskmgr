@@ -4,7 +4,7 @@ validate_certs: false
 
 # asana_token: Bearer 1/xxxxxxxxxxxxxxxx:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-# custom field Probability gid: 1200291243594278
+# custom field Probability gid: 1200325206436325
 
 # custom field OpportunityType is global
 asana_opp_types: # 1200046075857084

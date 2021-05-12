@@ -93,22 +93,6 @@
     var: section_gid
     verbosity: 2
 
-
-# - name: Opp {{ title_prefix }} - block for setting the fiscal_quarter
-#   block:
-#   - name: Opp {{ title_prefix }} - set asana_opp_type({{ opp_record_type }})
-#     set_fact:
-#       asana_opp_type: "{{ asana_opp_types[opp_record_type] }}"
-#   rescue:
-#     - name: Opp {{ title_prefix }} - set asana_opp_type to Other
-#       set_fact:
-#         asana_opp_type: "{{ asana_opp_types['Other'] }}"
-#
-# - name: Opp {{ title_prefix }} - print asana_opp_type
-#   debug:
-#     var: asana_opp_type
-#     verbosity: 2
-
 # Match the gid of the asana Fiscal Quarters (Q1, Q2, Q3, Q4)
 - name: Opp {{ title_prefix }} - set asana_fq({{ fiscal_quarter }})
   set_fact:
@@ -175,7 +159,6 @@
         '1200291243594278': "{{ probability }}" # probability (Global)
         # custom dropdown field names
         '1200008973756201': "{{ asana_fq }}" # Fiscal Quarter (Global)
-        '1200046075857084': "{{ asana_opp_type }}" # OpportunityType (Global)
         '1200235633617549': "{{ asana_fc }}" # ForecastCategory (Global)
         '1200291243594269': "{{ asana_stage }}" # SFDC Stage (Global)
         '1200291243594213': "{{ asana_nac_region }}" # NAC Region (Global)

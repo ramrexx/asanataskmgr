@@ -1,191 +1,224 @@
-- set_fact:
-    tsk_gid: ''
-    title_prefix: "({{customer_name}}) - ({{opp_number}}) - ({{csv_index+1}}/{{num_ops}})"
-    completed_opp: false
+- name: Reset variables
+  set_fact:
+    tsk_gid: 0
+    section_gid: ''
+    batch_data: []
+    title_prefix: "({{ customer_name }}) - ({{ opp_number }}) - ({{ csv_index+1 }}/{{ num_ops }})"
 
 # Loop through project_tasks looking for a matching task name that contains the opportunity number
-- name: Opp {{title_prefix}} - Check to see if the task already exists
+- name: Opp {{ title_prefix }} - check to see if the task already exists
   vars:
     _query: "[?contains(name, '{{ opp_number }}')].gid | [0]"
   set_fact:
     tsk_gid: "{{ project_tasks.json.data | to_json | from_json | json_query(_query) }}"
 
-- debug:
-    var: tsk_gid
-  when: tsk_gid != ''
+- name: Opp {{ title_prefix }} - print tsk_gid
+  debug:
+    msg: "Existing task found: {{ tsk_gid }}"
+  when: tsk_gid | int > 0
 
-# Match the gid of the asana templates to clone (TBD)
-- name: Opp {{title_prefix}} - Set asana_task_template
-  set_fact:
-    asana_task_template: "{{asana_template_tasks[default_task]}}"
-  when: tsk_gid == ''
+# Match the gid of the asana templates to clone
+- name: Opp {{ title_prefix }} - match the gid for the Asana template to clone
+  block:
+  - name: Opp {{ title_prefix }} - set asana_task_template
+    set_fact:
+      asana_task_template: "{{ asana_template_tasks[default_task] }}"
+    when: tsk_gid | int == 0
+  rescue:
+    - name: Opp {{ title_prefix }} - set asana_task_template to (inactive)
+      set_fact:
+        asana_task_template: "{{ asana_template_tasks['inactive'] }}"
 
-- debug:
+- name: Opp {{ title_prefix }} - print asana_task_template
+  debug:
     var: asana_task_template
-  when: tsk_gid == ''
+    verbosity: 2
+  when: tsk_gid | int == 0
 
 # Clone the asana_task_template with all of the subtasks preloaded
-- block:
-  - name: Opp {{title_prefix}} - Cloning asana_task_template({{asana_task_template}})
-    uri:
-      url: "{{ asana_api }}/tasks/{{asana_task_template}}/duplicate"
-      headers:
-        Authorization: "{{asana_token}}"
-      method: POST
-      body:
-        data:
-          include:
-          - attachments
-          - dependencies
-          - notes
-          - assignee
-          - parent
-          - projects
-          - subtasks
-          - notes
-          - tags
-          name: "{{opp_number}} - {{customer_name}} - {{opp_name}}"
-      body_format: json
-      validate_certs: "{{ validate_certs }}"
-      status_code: 200,201
-    when: tsk_gid == ''
-    register: cloned_task
-
-  # Set tsk_gid to the newly cloned task
-  - name: Opp {{title_prefix}} - Set tsk_gid of new task
-    set_fact:
-      tsk_gid: "{{cloned_task.json.data.new_task.gid}}"
-  when: tsk_gid == ''
-
-- debug:
-    var: tsk_gid
-
-# # Match the gid of the asana section
-# - block:
-#   - name: Opp {{title_prefix}} - Set section_gid
-#     set_fact:
-#       section_gid: "{{asana_sections[programs]}}"
-#     failed_when: "',' in {{ programs }}"
-#   rescue:
-#     - name: Opp {{title_prefix}} - Set asana_opp_type to Multi-Select / Needs Attention
-#       set_fact:
-#         section_gid: "{{ asana_sections[fixme] }}"
-#
-# - debug:
-#     var: section_gid
-#
-# # Move the task to the appropriate asana section (Commit, Best Case, Pipeline, else Closed)
-# - name: Opp {{title_prefix}} - Move task to the appropriate section
-#   uri:
-#     url: "{{ asana_api }}/sections/{{section_gid}}/addTask"
-#     headers:
-#       Authorization: "{{asana_token}}"
-#     method: POST
-#     body:
-#       data:
-#         task: "{{tsk_gid}}"
-#     body_format: json
-#     validate_certs: "{{ validate_certs }}"
-#     status_code: 200
-#   register: addtask_to_section
-
-# Match the gid of the Fiscal Quarters (Q1, Q2, Q3, Q4)
-- name: Opp {{title_prefix}} - Set fiscal_quarter({{fiscal_quarter}})
-  set_fact:
-    asana_fq: "{{asana_fiscal_quarters[fiscal_quarter]}}"
-
-- debug:
-      var: asana_fq
-
-# Match the gid of the ForecastCategory (Commit, Best Case, Pipeline, Closed)
-- name: Opp {{title_prefix}} - Set forecast_category({{forecast_category}})
-  set_fact:
-    asana_fc: "{{forecast_categories[forecast_category]}}"
-
-- debug:
-      var: asana_fc
-
-# Match the gid of the Stage
-- name: Opp {{title_prefix}} - Set forecast_category({{stage}})
-  set_fact:
-    asana_stage: "{{sfdc_stages[stage]}}"
-
-- debug:
-      var: asana_stage
-
-# Match the gid of the nac region
-- name: Opp {{title_prefix}} - Set nac_region({{na_region}})
-  set_fact:
-    asana_nac_region: "{{nac_regions[na_region]}}"
-
-- debug:
-      var: asana_nac_region
-
-
-# Match the gid of the nac subregion
-- name: Opp {{title_prefix}} - Set subregion({{subregion}})
-  set_fact:
-    asana_subregion: "{{nac_subregions[subregion]}}"
-
-- debug:
-      var: asana_subregion
-
-# Update task with notes, custom fields
-- name: Opp {{title_prefix}} - Update task notes and custom fields
+- name: Opp {{ title_prefix }} - cloning asana_task_template({{ asana_task_template }})
   uri:
-    url: "{{ asana_api }}/tasks/{{tsk_gid}}"
+    url: "{{ asana_api }}/tasks/{{ asana_task_template }}/duplicate"
     headers:
-      Authorization: "{{asana_token}}"
-    method: PUT
-    body:
-      data:
-        custom_fields:
-          # custom text fields
-          '1182531335993465': "{{ opp_owner }}" # AE (Global)
-          '1195217282482432': "{{ opp_number }}" # Opportunity Number (Global)
-          '1200113936496375': "https://redhat.my.salesforce.com/{{ opp_id }}" # SFDC Link (Global)
-          '1200114261516681': "{{ tb }}" # TB (Global)
-          '1200038584667544': "{{ syb }}" # SYB (Global)
-          '1200291243594269': "{{ asana_stage }}" # SFDC Stage (Global)
-          '1200204527019766': "{{ reseller }}" # Reseller (Global)
-          '1200291243594213': "{{ asana_nac_region }}" # NAC Region (Global)
-          '1200244002339995': "{{ asana_subregion }}" # NAC Subregion (Global)
-          '1200291243594278': "{{ probability }}" # probability (Global)
-          # custom dropdown field names
-          '1200008973756201': "{{ asana_fq }}" # Fiscal Quarter (Global)
-          '1200235633617549': "{{ asana_fc }}" # ForecastCategory (Global)
-        start_on: "{{ start_date }}" # start date
-        due_on: "{{ close_date }}" # close date
-        # reset the task name in case it was changed
-        name: "{{ opp_number }} - {{ customer_name }} - {{ opp_name }}"
-        notes: |
-          Opportunity Owner: {{ opp_owner }}
-          Product Details: {{ product_detail }}
-          Next Step:
-          {{next_step}}
-
-    body_format: json
-    validate_certs: "{{ validate_certs }}"
-    status_code: 200,201
-  ignore_errors: true
-  register: update_task
-
-# Lopp through the normalized products and apply product_tags
-# RFE: Look through project_tasks for the gid to make this more dynamic
-- name: Opp {{title_prefix}} - Adding products({{products}}) to task
-  uri:
-    url: "{{ asana_api }}/tasks/{{tsk_gid}}/addTag"
-    headers:
-      Authorization: "{{asana_token}}"
+      Authorization: "{{ asana_token }}"
     method: POST
     body:
       data:
-        tag: "{{product_tags[pt]}}"
+        include:
+        - attachments
+        - dependencies
+        - notes
+        - assignee
+        - parent
+        - projects
+        - subtasks
+        - notes
+        - tags
+        name: "{{ opp_number }} - {{ customer_name }} - {{ opp_name }}"
     body_format: json
     validate_certs: "{{ validate_certs }}"
     status_code: 200,201
-  ignore_errors: true
-  register: add_tags
-  loop: "{{products.split('|')}}"
+  when: tsk_gid | int == 0
+  register: cloned_task
+
+# Set tsk_gid to the newly cloned task
+- name: Opp {{ title_prefix }} - set tsk_gid of new task
+  set_fact:
+    tsk_gid: "{{ cloned_task.json.data.new_task.gid }}"
+  when: tsk_gid | int == 0
+
+- name: Opp {{ title_prefix }} - print tsk_gid
+  debug:
+    var: tsk_gid
+    verbosity: 2
+
+# set asana section to Closed / Omitted
+- name: Opp {{ title_prefix }} - set section_gid to ({{ forecast_category }})
+  set_fact:
+    section_gid: "{{ asana_sections[forecast_category] }}"
+  when: (forecast_category=='Closed' or forecast_category=='Omitted')
+
+- name: Opp {{ title_prefix }} - set section_gid to ({{ programs }})
+  set_fact:
+    section_gid: "{{ asana_sections[programs] }}"
+  when: "';' not in programs"
+
+- name: Opp {{ title_prefix }} - set section_gid to (Multi-Select / Needs Attention)
+  set_fact:
+    section_gid: "{{ asana_sections[Fixme] }}"
+  when: "';' in programs"
+
+- name: Opp {{ title_prefix }} - print section_gid
+  debug:
+    var: section_gid
+    verbosity: 2
+
+
+# - name: Opp {{ title_prefix }} - block for setting the fiscal_quarter
+#   block:
+#   - name: Opp {{ title_prefix }} - set asana_opp_type({{ opp_record_type }})
+#     set_fact:
+#       asana_opp_type: "{{ asana_opp_types[opp_record_type] }}"
+#   rescue:
+#     - name: Opp {{ title_prefix }} - set asana_opp_type to Other
+#       set_fact:
+#         asana_opp_type: "{{ asana_opp_types['Other'] }}"
+#
+# - name: Opp {{ title_prefix }} - print asana_opp_type
+#   debug:
+#     var: asana_opp_type
+#     verbosity: 2
+
+# Match the gid of the asana Fiscal Quarters (Q1, Q2, Q3, Q4)
+- name: Opp {{ title_prefix }} - set asana_fq({{ fiscal_quarter }})
+  set_fact:
+    asana_fq: "{{ asana_fiscal_quarters[fiscal_quarter] }}"
+
+- name: Opp {{ title_prefix }} - print asana_fq
+  debug:
+    var: asana_fq
+    verbosity: 2
+
+# Match the gid of the asana ForecastCategory (Commit, Best Case, Pipeline, Closed)
+- name: Opp {{ title_prefix }} - set forecast_category({{ forecast_category }})
+  set_fact:
+    asana_fc: "{{ forecast_categories[forecast_category] }}"
+
+- name: Opp {{ title_prefix }} - print asana_fc
+  debug:
+    var: asana_fc
+    verbosity: 2
+
+# Match the gid of the Asana Stage
+- name: Opp {{title_prefix}} - set asana_stage({{ stage }})
+  set_fact:
+    asana_stage: "{{ sfdc_stages[stage] }}"
+
+- name: Opp {{ title_prefix }} - print asana_stage
+  debug:
+      var: asana_stage
+      verbosity: 2
+
+# Match the gid of the nac_regions
+- name: Opp {{title_prefix}} - set nac_region({{ na_region }})
+  set_fact:
+    asana_nac_region: "{{ nac_regions[na_region] }}"
+
+- name: Opp {{ title_prefix }} - print asana_nac_region
+  debug:
+      var: asana_nac_region
+      verbosity: 2
+
+# Match the gid of the nac_subregions
+- name: Opp {{title_prefix}} - set subregion({{ subregion }})
+  set_fact:
+    asana_subregion: "{{ nac_subregions[subregion] }}"
+
+- name: Opp {{ title_prefix }} - print asana_subregion
+  debug:
+      var: asana_subregion
+      verbosity: 2
+
+
+- name: Opp {{ title_prefix }} - create dictionary based on updates and custom fields
+  set_fact:
+    update_tasks_data:
+      completed: "{{ (forecast_category=='Closed' or forecast_category=='Omitted') | ternary(true,false) }}"
+      custom_fields:
+        # custom text fields
+        '1182531335993465': "{{ opp_owner }}" # AE (Global)
+        '1195217282482432': "{{ opp_number }}" # Opportunity Number (Global)
+        '1200113936496375': "https://redhat.my.salesforce.com/{{ opp_id }}" # SFDC Link (Global)
+        '1200114261516681': "{{ tb }}" # TB (Global)
+        '1200038584667544': "{{ syb }}" # SYB (Global)
+        '1200176345337880': "{{ tech_win_date }}" # Technical Win Date (Global)
+        '1200204527019766': "{{ reseller }}" # Channel (Global)
+        '1200291243594278': "{{ probability }}" # probability (Global)
+        # custom dropdown field names
+        '1200008973756201': "{{ asana_fq }}" # Fiscal Quarter (Global)
+        '1200046075857084': "{{ asana_opp_type }}" # OpportunityType (Global)
+        '1200235633617549': "{{ asana_fc }}" # ForecastCategory (Global)
+        '1200291243594269': "{{ asana_stage }}" # SFDC Stage (Global)
+        '1200291243594213': "{{ asana_nac_region }}" # NAC Region (Global)
+        '1200244002339995': "{{ asana_subregion }}" # NAC Subregion (Global)
+      start_on: "{{ start_date }}" # start date
+      due_on: "{{ close_date }}" # close_date
+      # reset the task name in case it was changed
+      name: "{{ opp_number }} - {{ customer_name }} - {{ opp_name }}"
+      notes: |
+          Opportunity Owner: {{ opp_owner }}
+          Product Details: {{ product_detail }}
+
+          Next Step:
+          {{ next_step }}
+
+- name: Opp {{ title_prefix }} - add appropriate section data to batch data
+  set_fact:
+    batch_data: "{{ batch_data + [{'relative_path':'/sections/' + section_gid + '/addTask', 'method':'POST', 'data': {'task': tsk_gid} } ] }}"
+
+- name: Opp {{ title_prefix }} - add opp updates to batch data
+  set_fact:
+    batch_data: "{{ batch_data + [{'relative_path':'/tasks/' + tsk_gid + '', 'method':'PUT', 'data': update_tasks_data } ] }}"
+
+- name: Opp {{ title_prefix }} - add tag updates to batch data
+  set_fact:
+    batch_data: "{{ batch_data + [{'relative_path':'/tasks/' + tsk_gid + '/addTag', 'method':'POST', 'data':{'tag': product_tags[pt] }}] }}"
+  loop: "{{ products.split('|') }}"
+  when: pt != 'ERROR'
   loop_control:
     loop_var: pt
+
+- name: Opp {{ title_prefix }} - performing bulk update of opp
+  uri:
+    url: "{{ asana_api }}/batch"
+    headers:
+      Authorization: "{{ asana_token }}"
+    method: POST
+    body:
+      data:
+        actions:
+          "{{ batch_data }}"
+    body_format: json
+    validate_certs: "{{ validate_certs }}"
+    status_code: 200,201
+  register: batch_results

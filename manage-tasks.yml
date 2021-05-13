@@ -53,7 +53,7 @@
         - subtasks
         - notes
         - tags
-        name: "{{ opp_number }} - {{ customer_name }} - {{ opp_name }}"
+        name: "{{ opp_number }} - {{ opp_name }}"
     body_format: json
     validate_certs: "{{ validate_certs }}"
     status_code: 200,201
@@ -151,9 +151,10 @@
         '1200291243594269': "{{ asana_stage }}" # SFDC Stage (Global)
       due_on: "{{ close_date }}" # close_date
       # reset the task name in case it was changed
-      name: "{{ opp_number }} - {{ customer_name }} - {{ opp_name }}"
+      name: "{{ opp_number }} - {{ opp_name }}"
       notes: |
           Opportunity Owner: {{ opp_owner }}
+          Global Customer Name: {{ customer_name }}
           Reason: ({{ reason1 }} {{ reason2 }})
 
           Next Step:

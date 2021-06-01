@@ -126,6 +126,7 @@
 - name: Opp {{title_prefix}} - set nac_region({{ na_region }})
   set_fact:
     asana_nac_region: "{{ nac_regions[na_region] }}"
+  when: na_region | length > 0
 
 - name: Opp {{ title_prefix }} - print asana_nac_region
   debug:
@@ -136,6 +137,7 @@
 - name: Opp {{title_prefix}} - set subregion({{ subregion }})
   set_fact:
     asana_subregion: "{{ nac_subregions[subregion] }}"
+  when: subregion | length > 0
 
 - name: Opp {{ title_prefix }} - print asana_subregion
   debug:

@@ -160,8 +160,8 @@
         '1200008973756201': "{{ asana_fq }}" # Fiscal Quarter (Global)
         '1200235633617549': "{{ asana_fc }}" # ForecastCategory (Global)
         '1200291243594269': "{{ asana_stage }}" # SFDC Stage (Global)
-        '1200291243594213': "{{ asana_nac_region }}" # NAC Region (Global)
-        '1200244002339995': "{{ asana_subregion }}" # NAC Subregion (Global)
+        '1200291243594213': "{{ asana_nac_region | default(None) }}" # NAC Region (Global)
+        '1200244002339995': "{{ asana_subregion | default(None) }}" # NAC Subregion (Global)
       start_on: "{{ start_date }}" # start date
       due_on: "{{ close_date }}" # close_date
       # reset the task name in case it was changed

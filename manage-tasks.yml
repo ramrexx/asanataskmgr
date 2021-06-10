@@ -171,6 +171,7 @@
       notes: |
           Opportunity Owner: {{ opp_owner }}
           Product Details: {{ product_detail }}
+          Services Solutions: {{ services_solutions }}
 
           Next Step:
           {{ next_step }}

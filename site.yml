@@ -58,6 +58,7 @@
         reseller: "{{ csv_item['Reseller'] }}"
         next_step: "{{ csv_item['Next Step'] }}"
         opp_id: "{{ csv_item['Opportunity ID'] }}"
+        services_solutions: "{{ csv_item['Services Solutions'] }}"
       loop: "{{ csvopps.list }}"
       loop_control:
         loop_var: csv_item

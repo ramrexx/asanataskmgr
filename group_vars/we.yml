@@ -7,6 +7,7 @@ asana_template_tasks:
   'Overlay Credit': '1200136955758872' # TMP-RENEWAL
   'NA Sales Opportunity': '1200136955758875' # TMP-NETNEW
   'inactive': '1200169324941159' # TMP-INACTIVE
+  'Account': '1200544315347876' # TMP-ACCOUNT
 
 # project section gids are unique to a region / project
 asana_sections:

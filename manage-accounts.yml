@@ -20,14 +20,14 @@
 # Match the gid of the asana templates to clone (TMP-ACCOUNT)
 - name: Opp {{ title_prefix }} - match the gid for the Asana template to clone
   block:
-  - name: Opp {{ title_prefix }} - set asana_task_template(TMP-ACCOUNT)
+  - name: Opp {{ title_prefix }} - set asana_task_template(Account)
     set_fact:
-      asana_task_template: "{{ asana_template_tasks['TMP-ACCOUNT'] }}"
+      asana_task_template: "{{ asana_template_tasks['Account'] }}"
     when: tsk_gid | int == 0
   rescue:
-    - name: Opp {{ title_prefix }} - set asana_task_template to (TMP-ACCOUNT)
+    - name: Opp {{ title_prefix }} - set asana_task_template to (Account)
       set_fact:
-        asana_task_template: "{{ asana_template_tasks['TMP-ACCOUNT'] }}"
+        asana_task_template: "{{ asana_template_tasks['Account'] }}"
 
 - name: Opp {{ title_prefix }} - print asana_task_template
   debug:

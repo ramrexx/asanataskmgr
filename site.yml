@@ -39,36 +39,48 @@
         var: project_tasks.json.data | count
       failed_when: project_tasks is not defined
 
-    - name: Convert dict to list and Loop through each item
-      include_tasks: manage-tasks.yml
+    - name: Convert dict to list and Loop through each item to manage acounts
+      include_tasks: manage-accounts.yml
       vars:
-        close_date: "{{ csv_item['Close Date'] }}"
-        created_date: "{{ csv_item['Created Date'] }}"
         customer_name: "{{ csv_item['Global Customer Name'] }}"
-        description: "{{ csv_item['Description'] | default('') }}"
-        fiscal_quarter: "{{ csv_item['Fiscal Quarter'] }}"
-        forecast_category: "{{ csv_item['Forecast Category'] }}"
-        next_step: "{{ csv_item['Next Step'] | default('') }}"
-        opp_id: "{{ csv_item['Opportunity ID'] }}"
+        account_id: "{{ csv_item['Account ID'] }}"
         opp_number: "{{ csv_item['Opportunity Number'] }}"
-        opp_name: "{{ csv_item['Opportunity Name'] }}"
         opp_owner: "{{ csv_item['Opportunity Owner'] }}"
-        opp_record_type: "{{ csv_item['Opportunity Record Type'] }}"
-        products: "{{ csv_item['Products'] }}"
-        syb: "{{ csv_item['1st Year Booking'] }}"
-        tb: "{{ csv_item['Total Amount'] }}"
-        stage: "{{ csv_item['Stage'] }}"
-        tech_win_date: "{{ csv_item['Technical Win Date'] }}"
-        reason1: "{{ csv_item['Reason Closed/Lost'] }}"
-        reason2: "{{ csv_item['Reason Won/Lost (Sales Process)'] }}"
-        channel: "{{ csv_item['Channel'] }}"
-        reseller: "{{ csv_item['Reseller'] }}"
-        leadsource: "{{ csv_item['Lead Source'] }}"
-        distributor: "{{ csv_item['Financial Partner'] }}"
       loop: "{{ csvopps.list }}"
       loop_control:
         loop_var: csv_item
         index_var: csv_index
+
+    # - name: Convert dict to list and Loop through each item to manage tasks
+    #   include_tasks: manage-tasks.yml
+    #   vars:
+    #     close_date: "{{ csv_item['Close Date'] }}"
+    #     created_date: "{{ csv_item['Created Date'] }}"
+    #     customer_name: "{{ csv_item['Global Customer Name'] }}"
+    #     description: "{{ csv_item['Description'] | default('') }}"
+    #     fiscal_quarter: "{{ csv_item['Fiscal Quarter'] }}"
+    #     forecast_category: "{{ csv_item['Forecast Category'] }}"
+    #     next_step: "{{ csv_item['Next Step'] | default('') }}"
+    #     opp_id: "{{ csv_item['Opportunity ID'] }}"
+    #     opp_number: "{{ csv_item['Opportunity Number'] }}"
+    #     opp_name: "{{ csv_item['Opportunity Name'] }}"
+    #     opp_owner: "{{ csv_item['Opportunity Owner'] }}"
+    #     opp_record_type: "{{ csv_item['Opportunity Record Type'] }}"
+    #     products: "{{ csv_item['Products'] }}"
+    #     syb: "{{ csv_item['1st Year Booking'] }}"
+    #     tb: "{{ csv_item['Total Amount'] }}"
+    #     stage: "{{ csv_item['Stage'] }}"
+    #     tech_win_date: "{{ csv_item['Technical Win Date'] }}"
+    #     reason1: "{{ csv_item['Reason Closed/Lost'] }}"
+    #     reason2: "{{ csv_item['Reason Won/Lost (Sales Process)'] }}"
+    #     channel: "{{ csv_item['Channel'] }}"
+    #     reseller: "{{ csv_item['Reseller'] }}"
+    #     leadsource: "{{ csv_item['Lead Source'] }}"
+    #     distributor: "{{ csv_item['Financial Partner'] }}"
+    #   loop: "{{ csvopps.list }}"
+    #   loop_control:
+    #     loop_var: csv_item
+    #     index_var: csv_index
 
       # count number of opportunities processed
     - name: Play Summary

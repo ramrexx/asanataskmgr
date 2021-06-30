@@ -54,7 +54,7 @@
         - subtasks
         - notes
         - tags
-        name: "{{ opp_number }} - {{ opp_name }}"
+        name: "{{ customer_name }}"
     body_format: json
     validate_certs: "{{ validate_certs }}"
     status_code: 200,201

@@ -7,7 +7,7 @@
 # Loop through project_tasks looking for a matching task name that contains the opportunity number
 - name: Opp {{ title_prefix }} - check to see if the task already exists
   vars:
-    _query: "[? name==`{{customer_name}}`]"
+    _query: "[? name==`{{customer_name}}`].gid"
      # _query: "[?contains(name, '{{ customer_name }}')].gid | [0]"
   set_fact:
     tsk_gid: "{{ project_tasks.json.data | to_json | from_json | json_query(_query) }}"

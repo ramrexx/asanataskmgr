@@ -4,14 +4,12 @@
     batch_data: []
     title_prefix: "({{ customer_name }}) - ({{ opp_number }}) - ({{ csv_index+1 }}/{{ num_ops }})"
 
-# Loop through project_tasks looking for a matching task name that contains the opportunity number
+# Loop through project_tasks looking for a matching task name that matches the global customer name
 - name: Opp {{ title_prefix }} - check to see if the task already exists
   vars:
-    _query: "[?name=='{{ customer_name }}'].gid | [0]"
-     # _query: "[?contains(name, '{{ customer_name }}')].gid | [0]"
+    _query: "[? name==`{{ customer_name }}`].gid | [0]"
   set_fact:
-    tsk_gid: "{{ project_tasks.json.data | to_json | from_json | json_query(_query) }}"
-    # tsk_gid: "{{ project_tasks.json.data | to_json | from_json | json_query(_query) }}"
+    tsk_gid: "{{ project_tasks.json.data | json_query(_query) }}"
 
 - name: Opp {{ title_prefix }} - print tsk_gid
   debug:
@@ -91,7 +89,7 @@
         '1182531335993465': "{{ opp_owner }}" # AE (Global)
         '1200113936496375': "https://redhat.my.salesforce.com/{{ account_id }}" # SFDC Link (Global)
       # reset the task name in case it was changed
-      name: "{{ customer_name }}"
+      # name: "{{ customer_name }}"
       notes: |
           Opportunity Owner: {{ opp_owner }}
 

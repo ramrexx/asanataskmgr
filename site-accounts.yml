@@ -1,0 +1,57 @@
+---
+- name: Manage SFDC acounts as Asana tasks
+  hosts: localhost
+  gather_facts: false
+
+  vars_files:
+    - group_vars/all.yml
+    - "group_vars/{{region}}.yml"
+
+  pre_tasks:
+    - set_fact:
+        num_ops: "{{ csvopps.list|count }}"
+
+  tasks:
+    - name: Log project_gid
+      debug:
+        var: project_gid
+      failed_when: project_gid is not defined
+
+    - name: Get a list of tasks in a project ({{ project_gid }})
+      uri:
+        url: "{{ asana_api }}/projects/{{project_gid}}/tasks"
+        headers:
+          Content-Type: application/json
+          Authorization: "{{ asana_token }}"
+        method: GET
+        validate_certs: "{{ validate_certs }}"
+        status_code: 200
+      register: project_tasks
+
+    - name: Log project_tasks
+      debug:
+        var: project_tasks
+        verbosity: 2
+      failed_when: project_tasks is not defined
+
+    - name: Count number of tasks found
+      debug:
+        var: project_tasks.json.data | count
+      failed_when: project_tasks is not defined
+
+    - name: Convert dict to list and Loop through each item to manage acounts
+      include_tasks: manage-accounts.yml
+      vars:
+        customer_name: "{{ csv_item['Global Customer Name'] }}"
+        account_id: "{{ csv_item['Account ID'] }}"
+        opp_number: "{{ csv_item['Opportunity Number'] }}"
+        opp_owner: "{{ csv_item['Opportunity Owner'] }}"
+      loop: "{{ csvopps.list }}"
+      loop_control:
+        loop_var: csv_item
+        index_var: csv_index
+
+      # count number of opportunities processed
+    - name: Play Summary
+      debug:
+        msg: "Processed {{ csvopps.list|count }} opps"

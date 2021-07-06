@@ -92,6 +92,7 @@
 - name: Opp {{ title_prefix }} - set section_gid to forecast_category({{ forecast_category }})
   set_fact:
     section_gid: "{{ asana_sections[forecast_category] }}"
+  when: forecast_category | length > 0
 
 - name: Opp {{ title_prefix }} - print section_gid
   debug:
@@ -102,6 +103,7 @@
 - name: Opp {{ title_prefix }} - set asana_fq({{ fiscal_quarter }})
   set_fact:
     asana_fq: "{{ asana_fiscal_quarters[fiscal_quarter] }}"
+  when: fiscal_quarter | length > 0
 
 - name: Opp {{ title_prefix }} - print asana_fq
   debug:
@@ -112,6 +114,7 @@
 - name: Opp {{ title_prefix }} - set forecast_category({{ forecast_category }})
   set_fact:
     asana_fc: "{{ forecast_categories[forecast_category] }}"
+  when: forecast_category | length > 0
 
 - name: Opp {{ title_prefix }} - print asana_fc
   debug:
@@ -122,6 +125,7 @@
 - name: Opp {{title_prefix}} - set asana_stage({{ stage }})
   set_fact:
     asana_stage: "{{ sfdc_stages[stage] }}"
+  when: stage | length > 0
 
 - name: Opp {{ title_prefix }} - print asana_stage
   debug:
@@ -145,10 +149,10 @@
         '1200204672011254': "{{ leadsource }}" # LeadSource (Global)
         '1200204527686759': "{{ channel }}" # Channel (Global)
         # custom dropdown field names
-        '1200008973756201': "{{ asana_fq }}" # Fiscal Quarter (Global)
-        '1200046075857084': "{{ asana_opp_type }}" # OpportunityType (Global)
-        '1200235633617549': "{{ asana_fc }}" # ForecastCategory (Global)
-        '1200291243594269': "{{ asana_stage }}" # SFDC Stage (Global)
+        '1200008973756201': "{{ asana_fq | default(omit) }}" # Fiscal Quarter (Global)
+        '1200046075857084': "{{ asana_opp_type | default(omit) }}" # OpportunityType (Global)
+        '1200235633617549': "{{ asana_fc | default(omit) }}" # ForecastCategory (Global)
+        '1200291243594269': "{{ asana_stage | default(omit) }}" # SFDC Stage (Global)
       due_on: "{{ close_date }}" # close_date
       # reset the task name in case it was changed
       name: "{{ opp_number }} - {{ opp_name }}"

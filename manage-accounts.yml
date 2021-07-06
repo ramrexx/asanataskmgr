@@ -9,7 +9,7 @@
   vars:
     _query: "[? name==`{{ customer_name }}`].gid | [0]"
   set_fact:
-    tsk_gid: "{{ project_tasks.json.data | json_query(_query) }}"
+    tsk_gid: "{{ project_tasks.json.data | to_json | from_json | json_query(_query) }}"
 
 - name: Opp {{ title_prefix }} - print tsk_gid
   debug:

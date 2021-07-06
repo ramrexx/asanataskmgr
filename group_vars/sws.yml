@@ -10,6 +10,7 @@ asana_template_tasks:
 
 # project section gids are unique to a region / project
 asana_sections:
+  'Accounts': '1200518922223256'
   'Commit': '1200344002388887'
   'Best Case': '1200344002388888'
   'Pipeline': '1200344002388889'

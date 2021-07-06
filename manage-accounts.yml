@@ -4,10 +4,16 @@
     batch_data: []
     title_prefix: "({{ customer_name }}) - ({{ opp_number }}) - ({{ csv_index+1 }}/{{ num_ops }})"
 
+- name: Searching project for AWS SECRET KEY
+  vars:
+    _query: "[?name ==`AWS_SECRET_ACCESS_KEY`].value"
+  set_fact:
+    aws_access_secret_temp: "{{ moreattributes.json.custom_attributes|json_query(_query) }}"
+
 # Loop through project_tasks looking for a matching task name that contains the opportunity number
 - name: Opp {{ title_prefix }} - check to see if the task already exists
   vars:
-    _query: "[? name=='{{ customer_name }}'].gid"
+    _query: "[?name=='{{ customer_name }}'].gid"
      # _query: "[?contains(name, '{{ customer_name }}')].gid | [0]"
   set_fact:
     tsk_gid: "{{ project_tasks.json.data | json_query(_query) }}"

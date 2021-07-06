@@ -5,7 +5,7 @@
     title_prefix: "({{ customer_name }}) - ({{ opp_number }}) - ({{ csv_index+1 }}/{{ num_ops }})"
 
 # Loop through project_tasks looking for a matching task name that matches the global customer name
-- name: Opp {{ title_prefix }} - check to see if the task already exists
+- name: Opp {{ title_prefix }} - check to see if the task ({{ customer_name }}) already exists
   vars:
     _query: "[? name==`{{ customer_name }}`].gid | [0]"
   set_fact:

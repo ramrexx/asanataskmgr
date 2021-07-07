@@ -3,6 +3,7 @@ csv_file:
 
 # project task gids are unique to a region / project
 asana_template_tasks:
+  'Account': '1200572722597137' # TMP-ACCOUNT
   'Renewal': '1200256428164187' # TMP-RENEWAL
   'Overlay Credit': '1200256428164187' # TMP-RENEWAL
   'NA Sales Opportunity': '1200256428164185' # TMP-NETNEW
@@ -10,6 +11,7 @@ asana_template_tasks:
 
 # project section gids are unique to a region / project
 asana_sections:
+  'Accounts': '1200572722597135'
   'Commit': '1200256428164178'
   'Best Case': '1200256428164179'
   'Pipeline': '1200256428164180'

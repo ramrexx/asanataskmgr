@@ -2,7 +2,7 @@
   set_fact:
     tsk_gid: 0
     batch_data: []
-    title_prefix: "({{ customer_name }}) - ({{ opp_number }}) - ({{ csv_index+1 }}/{{ num_ops }})"
+    title_prefix: "({{ customer_name }}) - ({{ csv_index+1 }}/{{ num_ops }})"
 
 # Loop through project_tasks looking for a matching task name that matches the global customer name
 - name: Opp {{ title_prefix }} - check to see if the task ({{ customer_name }}) already exists

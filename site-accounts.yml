@@ -44,7 +44,6 @@
       vars:
         customer_name: "{{ csv_item['Global Customer Name'] }}"
         account_id: "{{ csv_item['Account ID'] }}"
-        opp_number: "{{ csv_item['Opportunity Number'] }}"
         opp_owner: "{{ csv_item['Opportunity Owner'] }}"
       loop: "{{ csvopps.list }}"
       loop_control:

@@ -111,7 +111,7 @@
     verbosity: 2
 
 # Match the gid of the asana ForecastCategory (Commit, Best Case, Pipeline, Closed)
-- name: Opp {{ title_prefix }} - set asana_fc({{ forecast_category }})
+- name: Opp {{ title_prefix }} - set forecast_category({{ forecast_category }})
   set_fact:
     asana_fc: "{{ forecast_categories[forecast_category] }}"
   when: forecast_category | length > 0

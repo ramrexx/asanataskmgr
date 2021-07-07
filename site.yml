@@ -8,19 +8,8 @@
     - "group_vars/{{region}}.yml"
 
   pre_tasks:
-    - name: Read csv file and return a dict
-      community.general.read_csv:
-        path: "{{csv_file}}"
-        skipinitialspace: true
-        strict: false
-      register: csvopps
-      delegate_to: localhost
-
     - set_fact:
         num_ops: "{{ csvopps.list|count }}"
-
-    - name: Include vaulted asana_token
-      include_vars: ~/asana-vault.yml
 
   tasks:
     - name: Log project_gid
@@ -28,23 +17,29 @@
         var: project_gid
       failed_when: project_gid is not defined
 
-    - name: Get a list of tasks in a project ({{asana_project_name}})
+    - name: Get a list of tasks in a project ({{ project_gid }})
       uri:
         url: "{{ asana_api }}/projects/{{project_gid}}/tasks"
         headers:
           Content-Type: application/json
-          Authorization: "{{asana_token}}"
+          Authorization: "{{ asana_token }}"
         method: GET
         validate_certs: "{{ validate_certs }}"
         status_code: 200
       register: project_tasks
+
+    - name: Log project_tasks
+      debug:
+        var: project_tasks
+        verbosity: 2
+      failed_when: project_tasks is not defined
 
     - name: Count number of tasks found
       debug:
         var: project_tasks.json.data | count
       failed_when: project_tasks is not defined
 
-    - name: Convert dict to list and Loop through each item
+    - name: Convert dict to list and Loop through each item to manage tasks
       include_tasks: manage-tasks.yml
       vars:
         close_date: "{{ csv_item['Close Date'] }}"
@@ -62,7 +57,10 @@
         products: "{{ csv_item['Products'] }}"
         syb: "{{ csv_item['1st Year Booking'] }}"
         tb: "{{ csv_item['Total Amount'] }}"
+        stage: "{{ csv_item['Stage'] }}"
         tech_win_date: "{{ csv_item['Technical Win Date'] }}"
+        reason1: "{{ csv_item['Reason Closed/Lost'] }}"
+        reason2: "{{ csv_item['Reason Won/Lost (Sales Process)'] }}"
         channel: "{{ csv_item['Channel'] }}"
         reseller: "{{ csv_item['Reseller'] }}"
         leadsource: "{{ csv_item['Lead Source'] }}"
@@ -75,4 +73,4 @@
       # count number of opportunities processed
     - name: Play Summary
       debug:
-        msg: "Processed {{csvopps.list|count}} opps from ({{csv_file}})"
+        msg: "Processed {{ csvopps.list|count }} opps"

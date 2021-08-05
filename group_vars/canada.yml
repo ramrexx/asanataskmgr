@@ -1,0 +1,19 @@
+project_gid: 1200687566438957
+csv_file:
+
+# project task gids are unique to a region / project
+asana_template_tasks:
+  'Account': '1200734251197925' # TMP-ACCOUNT
+  'Renewal': '1200687577788984' # TMP-RENEWAL
+  'Overlay Credit': '1200687577788984' # TMP-RENEWAL
+  'NA Sales Opportunity': '1200687538673694' # TMP-NETNEW
+  'inactive': '1200687578866227' # TMP-INACTIVE
+
+# project section gids are unique to a region / project
+asana_sections:
+  'Accounts': '1200687566438958'
+  'Commit': '1200687566438959'
+  'Best Case': '1200687566438960'
+  'Pipeline': '1200687566438961'
+  'Closed': '1200687566438962'
+  'Omitted': '1200734251197940'

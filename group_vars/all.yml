@@ -22,6 +22,7 @@ sfdc_stages: # 1200291243594269
   'Prepare': '1200291243594275'
   'Closed Booked': '1200291243594276'
   'Closed Lost': '1200304649445286'
+  'Closed Won': '1200841140062260'
 
 # custom field Fiscal Quarter is global
 asana_fiscal_quarters: # 1200008973756201

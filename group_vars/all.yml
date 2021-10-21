@@ -11,6 +11,7 @@ asana_opp_types: # 1200046075857084
   'Other': '1200172396491648'
   'Overlay Credit': '1200248826301713'
   'Booked Opp Process': '1200248826301714'
+  'Approved': '1201247075531198'
 
 # custom field SFDC Stage is global
 sfdc_stages: # 1200291243594269

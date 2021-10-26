@@ -138,14 +138,14 @@
       completed: "{{ (forecast_category=='Closed' or forecast_category=='Omitted') | ternary(true,false) }}"
       custom_fields:
         # custom text fields
-        '1182531335993465': "{{ opp_owner }}" # AE (Global)
+        #'1182531335993465': "{{ opp_owner }}" # AE (Global)
         '1195217282482432': "{{ opp_number }}" # Opportunity Number (Global)
         '1200113936496375': "https://redhat.my.salesforce.com/{{ opp_id }}" # SFDC Link (Global)
         '1200114261516681': "{{ tb }}" # TB (Global)
         '1200038584667544': "{{ syb }}" # SYB (Global)
-        '1200176345337880': "{{ tech_win_date }}" # Technical Win Date (Global)
+        #'1200176345337880': "{{ tech_win_date }}" # Technical Win Date (Global)
         '1200204527019766': "{{ reseller }}" # Channel (Global)
-        '1200204611344740': "{{ distributor }}" # Distributor (Global)
+        #'1200204611344740': "{{ distributor }}" # Distributor (Global)
         '1200204672011254': "{{ leadsource }}" # LeadSource (Global)
         '1200204527686759': "{{ channel }}" # Channel (Global)
         # custom dropdown field names
@@ -157,7 +157,6 @@
       # reset the task name in case it was changed
       name: "{{ opp_number }} - {{ opp_name }}"
       notes: |
-          Opportunity Owner: {{ opp_owner }}
           Global Customer Name: {{ customer_name }}
           Reason: ({{ reason1 }} {{ reason2 }})
 

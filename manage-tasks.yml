@@ -139,7 +139,7 @@
       custom_fields:
         # custom text fields
         '1182531335993465': "{{ opp_owner }}" # AE (Global)
-        '1195217282482432': "{{ opp_number }}" # Opportunity Number (Global)
+        # '1195217282482432': "{{ opp_number }}" # Opportunity Number (Global)
         '1200113936496375': "https://redhat.my.salesforce.com/{{ opp_id }}" # SFDC Link (Global)
         '1200114261516681': "{{ tb }}" # TB (Global)
         '1200038584667544': "{{ syb }}" # SYB (Global)

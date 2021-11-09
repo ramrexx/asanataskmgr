@@ -155,7 +155,6 @@
       notes: |
           Global Customer Name: {{ customer_name }}
           Account Name: {{ account_name }}
-          Reason: ({{ reason1 }} {{ reason2 }})
 - name: Opp {{ title_prefix }} - add appropriate section data to batch data
   set_fact:
     batch_data: "{{ batch_data + [{'relative_path':'/sections/' + section_gid + '/addTask', 'method':'POST', 'data': {'task': tsk_gid} } ] }}"

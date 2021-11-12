@@ -139,13 +139,13 @@
       custom_fields:
         # custom text fields
         '1195217282482432': "{{ opp_number }}" # Opportunity Number (Global)
-        # '1200113936496375': "https://redhat.my.salesforce.com/{{ opp_id }}" # SFDC Link (Global)
+        '1200113936496375': "https://redhat.my.salesforce.com/{{ opp_id }}" # SFDC Link (Global)
         '1200114261516681': "{{ tb }}" # TB (Global)
         '1200038584667544': "{{ syb }}" # SYB (Global)
         '1200204527686759': "{{ channel }}" # Channel (Global)
         # custom dropdown field names
         # '1200008973756201': "{{ asana_fq | default(omit) }}" # Fiscal Quarter (Global)
-        # '1200046075857084': "{{ asana_opp_type | default(omit) }}" # OpportunityType (Global)
+        '1200046075857084': "{{ asana_opp_type | default(omit) }}" # OpportunityType (Global)
         '1200235633617549': "{{ asana_fc | default(omit) }}" # ForecastCategory (Global)
         '1200291243594269': "{{ asana_stage | default(omit) }}" # SFDC Stage (Global)
       start_on: "{{ start_date }}" # start date

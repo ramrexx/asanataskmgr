@@ -148,7 +148,7 @@
         '1200046075857084': "{{ asana_opp_type | default(omit) }}" # OpportunityType (Global)
         '1200235633617549': "{{ asana_fc | default(omit) }}" # ForecastCategory (Global)
         '1200291243594269': "{{ asana_stage | default(omit) }}" # SFDC Stage (Global)
-      start_on: "{{ start_date }}" # start date
+      # start_on: "{{ start_date }}" # start date
       due_on: "{{ close_date }}" # close_date
       # reset the task name in case it was changed
       name: "{{ opp_number }} - {{ opp_name }}"

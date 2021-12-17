@@ -155,7 +155,7 @@
       notes: |
           Global Customer Name: {{ customer_name }}
           Account Name: {{ account_name }}
-          Opportunity Record Type: {{ asana_opp_type | default(omit) }}
+          Opportunity Record Type: {{ opp_record_type | default(omit) }}
 - name: Opp {{ title_prefix }} - add appropriate section data to batch data
   set_fact:
     batch_data: "{{ batch_data + [{'relative_path':'/sections/' + section_gid + '/addTask', 'method':'POST', 'data': {'task': tsk_gid} } ] }}"

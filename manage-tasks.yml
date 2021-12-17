@@ -73,20 +73,20 @@
 
 # Match the gid of the asana Opportunity Type (Renewal, Net New, Other, etc)
 # RFE: Look through project_details for the gid to make this more dynamic
-- name: Opp {{ title_prefix }} - block for setting the Opportunity type
-  block:
-  - name: Opp {{ title_prefix }} - set asana_opp_type({{ opp_record_type }})
-    set_fact:
-      asana_opp_type: "{{ asana_opp_types[opp_record_type] }}"
-  rescue:
-    - name: Opp {{ title_prefix }} - set asana_opp_type to Other
-      set_fact:
-        asana_opp_type: "{{ asana_opp_types['Other'] }}"
-
-- name: Opp {{ title_prefix }} - print asana_opp_type
-  debug:
-    var: asana_opp_type
-    verbosity: 2
+# - name: Opp {{ title_prefix }} - block for setting the Opportunity type
+#   block:
+#   - name: Opp {{ title_prefix }} - set asana_opp_type({{ opp_record_type }})
+#     set_fact:
+#       asana_opp_type: "{{ asana_opp_types[opp_record_type] }}"
+#   rescue:
+#     - name: Opp {{ title_prefix }} - set asana_opp_type to Other
+#       set_fact:
+#         asana_opp_type: "{{ asana_opp_types['Other'] }}"
+#
+# - name: Opp {{ title_prefix }} - print asana_opp_type
+#   debug:
+#     var: asana_opp_type
+#     verbosity: 2
 
 # Match the gid of the asana section (Commit, Best Case, Pipeline, Closed)
 - name: Opp {{ title_prefix }} - set section_gid to forecast_category({{ forecast_category }})

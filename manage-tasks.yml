@@ -145,7 +145,7 @@
         '1200204527686759': "{{ channel }}" # Channel (Global)
         # custom dropdown field names
         '1200008973756201': "{{ asana_fq | default(omit) }}" # Fiscal Quarter (Global)
-        '1200046075857084': "{{ asana_opp_type | default(omit) }}" # OpportunityType (Global)
+        # '1200046075857084': "{{ asana_opp_type | default(omit) }}" # OpportunityType (Global)
         '1200235633617549': "{{ asana_fc | default(omit) }}" # ForecastCategory (Global)
         '1200291243594269': "{{ asana_stage | default(omit) }}" # SFDC Stage (Global)
       # start_on: "{{ start_date }}" # start date
@@ -155,6 +155,7 @@
       notes: |
           Global Customer Name: {{ customer_name }}
           Account Name: {{ account_name }}
+          Opportunity Record Type: {{ asana_opp_type | default(omit) }}
 - name: Opp {{ title_prefix }} - add appropriate section data to batch data
   set_fact:
     batch_data: "{{ batch_data + [{'relative_path':'/sections/' + section_gid + '/addTask', 'method':'POST', 'data': {'task': tsk_gid} } ] }}"

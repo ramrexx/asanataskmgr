@@ -122,7 +122,7 @@
     verbosity: 2
 
 # Match the gid of the Asana Stage
-- name: Opp {{title_prefix}} - set asana_stage({{ stage }})
+- name: Opp {{ title_prefix }} - set asana_stage({{ stage }})
   set_fact:
     asana_stage: "{{ sfdc_stages[stage] }}"
   when: stage | length > 0

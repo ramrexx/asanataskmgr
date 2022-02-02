@@ -1,0 +1,187 @@
+---
+# Sample Tower Workflow extra_vars
+spreadsheet_id:
+range:
+region: fiserv
+
+######################################################
+# fiserv - project gids unique to a Asana project
+project_gid: 1201273835003427
+asana_template_tasks:
+  'Account': '1201273804206871' # TMP-ACCOUNT
+  'Renewal': '1201273840463713' # TMP-RENEWAL
+  'Overlay Credit': '1201273840463713' # TMP-RENEWAL
+  'NA Sales Opportunity': '1201273905700445' # TMP-NETNEW
+  'inactive': '1201273905683340' # TMP-INACTIVE
+asana_sections:
+  'Accounts': '1201273835003428'
+  'Commit': '1201273835003429'
+  'Best Case': '1201273835003430'
+  'Pipeline': '1201273835003431'
+  'Closed': '1201273835003432'
+  'Omitted': '1201273804199414'
+
+######################################################
+# Temenos - - project gids unique to a Asana project
+project_gid: 1201378342078502
+asana_template_tasks:
+  'Renewal': '1201378433061281' # TMP-RENEWAL
+  'Overlay Credit': '1201378433061281' # TMP-RENEWAL
+  'NA Sales Opportunity': '1201378479150685' # TMP-NETNEW
+  'inactive': '1201378479094898' # TMP-INACTIVE
+asana_sections:
+  'Commit': '1201378342078504'
+  'Best Case': '1201378342078505'
+  'Pipeline': '1201378342078506'
+  'Closed': '1201378342078507'
+  'Omitted': '1201378342805631'
+
+######################################################
+# fis global - project gids unique to a Asana project
+project_gid: 1201382792675009
+asana_template_tasks:
+  'Renewal': '1201382800998802' # TMP-RENEWAL
+  'Overlay Credit': '1201382800998802' # TMP-RENEWAL
+  'NA Sales Opportunity': '1201382745020089' # TMP-NETNEW
+  'inactive': '1201382744955563' # TMP-INACTIVE
+asana_sections:
+  'Commit': '1201382792675011'
+  'Best Case': '1201382792675012'
+  'Pipeline': '1201382792675013'
+  'Closed': '1201382792675014'
+  'Omitted': '1201382739788025'
+
+######################################################
+# Broadridge - project gids unique to a Asana project
+project_gid: 1201383191680064
+asana_template_tasks:
+  'Renewal': '1201383596089878' # TMP-RENEWAL
+  'Overlay Credit': '1201383596089878' # TMP-RENEWAL
+  'NA Sales Opportunity': '1201383493271155' # TMP-NETNEW
+  'inactive': '1201383493230237' # TMP-INACTIVE
+asana_sections:
+  'Commit': '1201383191680066'
+  'Best Case': '1201383191680067'
+  'Pipeline': '1201383191680068'
+  'Closed': '1201383191680069'
+  'Omitted': '1201383594950058'
+
+######################################################
+# Finastra - project gids unique to a Asana project
+project_gid: 1201383191680083
+asana_template_tasks:
+  'Renewal': '1201383634970216' # TMP-RENEWAL
+  'Overlay Credit': '1201383634970216' # TMP-RENEWAL
+  'NA Sales Opportunity': '1201383665669417' # TMP-NETNEW
+  'inactive': '1201383665648669' # TMP-INACTIVE
+asana_sections:
+  'Commit': '1201383191680085'
+  'Best Case': '1201383191680086'
+  'Pipeline': '1201383191680087'
+  'Closed': '1201383191680088'
+  'Omitted': '1201383575765147'
+
+######################################################
+# Swift - project gids unique to a Asana project
+project_gid: 1201384313203222
+asana_template_tasks:
+  'Renewal': '1201384450410780' # TMP-RENEWAL
+  'Overlay Credit': '1201384450410780' # TMP-RENEWAL
+  'NA Sales Opportunity': '1201384395003286' # TMP-NETNEW
+  'inactive': '1201384480999364' # TMP-INACTIVE
+asana_sections:
+  'Commit': '1201384313203224'
+  'Best Case': '1201384313203225'
+  'Pipeline': '1201384313203226'
+  'Closed': '1201384313203227'
+  'Omitted': '1201384479812187'
+
+######################################################
+# EdgeVerve - project gids unique to a Asana project
+project_gid: 1201758426353862
+asana_template_tasks:
+  'Renewal': '1201758998579487' # TMP-RENEWAL
+  'Overlay Credit': '1201758998579487' # TMP-RENEWAL
+  'NA Sales Opportunity': '1201759013344230' # TMP-NETNEW
+  'inactive': '1201759013266822' # TMP-INACTIVE
+asana_sections:
+  'Commit': '1201758426353864'
+  'Best Case': '1201758426353865'
+  'Pipeline': '1201758426353866'
+  'Closed': '1201758426353867'
+  'Omitted': '1201759012244071'
+
+######################################################
+# ACI Worldwide - project gids unique to a Asana project
+project_gid: 1201384313203241
+asana_template_tasks:
+  'Renewal': '1201384652529574' # TMP-RENEWAL
+  'Overlay Credit': '1201384652529574' # TMP-RENEWAL
+  'NA Sales Opportunity': '1201384684946571' # TMP-NETNEW
+  'inactive': '1201384596732660' # TMP-INACTIVE
+asana_sections:
+  'Commit': '1201384313203243'
+  'Best Case': '1201384313203244'
+  'Pipeline': '1201384313203245'
+  'Closed': '1201384313203246'
+  'Omitted': '1201384682630349'
+
+######################################################
+# Avaloq - project gids unique to a Asana project
+project_gid: 1201758426353879
+asana_template_tasks:
+  'Renewal': '1201759074894208' # TMP-RENEWAL
+  'Overlay Credit': '1201759074894208' # TMP-RENEWAL
+  'NA Sales Opportunity': '1201759075757174' # TMP-NETNEW
+  'inactive': '1201759075699675' # TMP-INACTIVE
+asana_sections:
+  'Commit': '1201758426353881'
+  'Best Case': '1201758426353882'
+  'Pipeline': '1201758426353883'
+  'Closed': '1201758426353884'
+  'Omitted': '1201759142935052'
+
+######################################################
+# Worldline - project gids unique to a Asana project
+project_gid: 1201557716866904
+asana_template_tasks:
+  'Renewal': '1201558093434775' # TMP-RENEWAL
+  'Overlay Credit': '1201558093434775' # TMP-RENEWAL
+  'NA Sales Opportunity': '1201588835069192' # TMP-NETNEW
+  'inactive': '1201558093451842' # TMP-INACTIVE
+asana_sections:
+  'Commit': '1201558093423634'
+  'Best Case': '1201558093432362'
+  'Pipeline': '1201558093433464'
+  'Closed': '1201558093433546'
+  'Omitted': '1201558093434645'
+
+######################################################
+# IntellectDesign - project gids unique to a Asana project
+project_gid: 1201557716866916
+asana_template_tasks:
+  'Renewal': '1201558298883942' # TMP-RENEWAL
+  'Overlay Credit': '1201558298883942' # TMP-RENEWAL
+  'NA Sales Opportunity': '1201558298902565' # TMP-NETNEW
+  'inactive': '1201558298887409' # TMP-INACTIVE
+asana_sections:
+  'Commit': '1201558298872564'
+  'Best Case': '1201558298877449'
+  'Pipeline': '1201558298877526'
+  'Closed': '1201558298878566'
+  'Omitted': '1201558298880637'
+
+######################################################
+# Tier3 - project gids unique to a Asana project
+project_gid: 1201384313203203
+asana_template_tasks:
+  'Renewal': '1201384321107402' # TMP-RENEWAL
+  'Overlay Credit': '1201384321107402' # TMP-RENEWAL
+  'NA Sales Opportunity': '1201384369850092' # TMP-NETNEW
+  'inactive': '1201384369805997' # TMP-INACTIVE
+asana_sections:
+  'Commit': '1201384313203205'
+  'Best Case': '1201384313203206'
+  'Pipeline': '1201384313203207'
+  'Closed': '1201384313203208'
+  'Omitted': '1201384425540536'

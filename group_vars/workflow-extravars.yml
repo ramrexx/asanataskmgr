@@ -1,0 +1,56 @@
+---
+# Sample Tower Workflow extra_vars
+spreadsheet_id:
+range:
+region:
+
+######################################################
+# TME-ESP - project gids unique to a Asana project
+project_gid: 1200679669259391
+asana_template_tasks:
+  'Account': '1200734251197918' # TMP-ACCOUNT
+  'Renewal': '1200679856089774' # TMP-RENEWAL
+  'Overlay Credit': '1200679856089774' # TMP-RENEWAL
+  'NA Sales Opportunity': '1200679794922600' # TMP-NETNEW
+  'inactive': '1200679669259400' # TMP-INACTIVE
+asana_sections:
+  'Accounts': '1200679669259392'
+  'Commit': '1200679669259393'
+  'Best Case': '1200679669259394'
+  'Pipeline': '1200679669259395'
+  'Closed': '1200679669259396'
+  'Omitted': '1200734251197910'
+
+######################################################
+# TME-Canada project gids unique to a Asana project
+project_gid: 1200687566438957
+asana_template_tasks:
+  'Account': '1200734251197925' # TMP-ACCOUNT
+  'Renewal': '1200687577788984' # TMP-RENEWAL
+  'Overlay Credit': '1200687577788984' # TMP-RENEWAL
+  'NA Sales Opportunity': '1200687538673694' # TMP-NETNEW
+  'inactive': '1200687578866227' # TMP-INACTIVE
+asana_sections:
+  'Accounts': '1200687566438958'
+  'Commit': '1200687566438959'
+  'Best Case': '1200687566438960'
+  'Pipeline': '1200687566438961'
+  'Closed': '1200687566438962'
+  'Omitted': '1200734251197940'
+
+######################################################
+# TME-ATT - project gids unique to a Asana project
+project_gid: 1200688037370804
+asana_template_tasks:
+  'Account': '1200734251197928' # TMP-ACCOUNT
+  'Renewal': '1200688733934151' # TMP-RENEWAL
+  'Overlay Credit': '1200688733934151' # TMP-RENEWAL
+  'NA Sales Opportunity': '1200688702281135' # TMP-NETNEW
+  'inactive': '1200688734779982' # TMP-INACTIVE
+asana_sections:
+  'Accounts': '1200688037370805'
+  'Commit': '1200688037370806'
+  'Best Case': '1200688037370807'
+  'Pipeline': '1200688037370808'
+  'Closed': '1200688037370809'
+  'Omitted': '1200734251197953'

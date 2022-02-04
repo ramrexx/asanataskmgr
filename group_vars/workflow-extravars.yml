@@ -1,0 +1,27 @@
+---
+# Sample Tower Workflow extra_vars
+spreadsheet_id:
+range:
+region:
+
+######################################################
+# SPP - project gids unique to a Asana project
+project_gid: 1200291243594186
+asana_template_tasks:
+  default_task: '1200303963606230' # TMP-TASK
+  inactive: '1200323122515529' # TMP-INACTIVE
+asana_sections:
+  'Fixme': '1200291243594294' # Multi-Select / Needs Attention
+  'BDM  AI/ML and Analytics': '1200291243594289'
+  'BDM  Automation': '1200291243594284'
+  'BDM  Customer Engagement Hub': '1200291243594288'
+  'BDM  SAP': '1200455363625032'
+  'BDM  Cloud Services': '1200754270458133'
+  'BDM  Edge Computing': '1200754270458132'
+  'NAC  Windows Automation': '1200291243594282'
+  'NAC  Cloud Native Development': '1200291243594283'
+  'NAC  Network Automation': '1200291243594285'
+  'NAC  Business Optimization': '1200291243594286'
+  'NAC  Security Automation': '1200291243594290'
+  'Closed': '1200320432126740'
+  'Omitted': '1200320432126743'

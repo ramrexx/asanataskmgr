@@ -5,7 +5,7 @@
 
   vars_files:
     - group_vars/all.yml
-    - "group_vars/{{region}}.yml"
+    # - "group_vars/{{region}}.yml"
 
   pre_tasks:
     - set_fact:

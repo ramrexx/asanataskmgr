@@ -134,15 +134,15 @@
       verbosity: 2
 
 # Match the gid of the nac_subregions
-- name: Opp {{title_prefix}} - set subregion({{ subregion }})
-  set_fact:
-    asana_subregion: "{{ nac_subregions[subregion] }}"
-  when: subregion | length > 0
-
-- name: Opp {{ title_prefix }} - print asana_subregion
-  debug:
-      var: asana_subregion
-      verbosity: 2
+# - name: Opp {{title_prefix}} - set subregion({{ subregion }})
+#   set_fact:
+#     asana_subregion: "{{ nac_subregions[subregion] }}"
+#   when: subregion | length > 0
+#
+# - name: Opp {{ title_prefix }} - print asana_subregion
+#   debug:
+#       var: asana_subregion
+#       verbosity: 2
 
 
 - name: Opp {{ title_prefix }} - create dictionary based on updates and custom fields
@@ -163,7 +163,7 @@
         '1200235633617549': "{{ asana_fc }}" # ForecastCategory (Global)
         '1200291243594269': "{{ asana_stage }}" # SFDC Stage (Global)
         '1200291243594213': "{{ asana_nac_region | default(omit) }}" # NAC Region (Global)
-        '1200244002339995': "{{ asana_subregion | default(omit) }}" # NAC Subregion (Global)
+        # '1200244002339995': "{{ asana_subregion | default(omit) }}" # NAC Subregion (Global)
       start_on: "{{ start_date }}" # start date
       due_on: "{{ close_date }}" # close_date
       # reset the task name in case it was changed

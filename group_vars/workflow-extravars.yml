@@ -1,0 +1,22 @@
+---
+# Sample Tower Workflow extra_vars
+spreadsheet_id:
+range:
+region:
+
+######################################################
+# fiserv - project gids unique to a Asana project
+project_gid:
+asana_template_tasks:
+  'Account': '' # TMP-ACCOUNT
+  'Renewal': '' # TMP-RENEWAL
+  'Overlay Credit': '' # TMP-RENEWAL
+  'NA Sales Opportunity': '' # TMP-NETNEW
+  'inactive': '' # TMP-INACTIVE
+asana_sections:
+  'Accounts': ''
+  'Commit': ''
+  'Best Case': ''
+  'Pipeline': ''
+  'Closed': ''
+  'Omitted': ''

@@ -1,0 +1,18 @@
+# This is the definition for an Ansible Tower Credential Type
+# for creating the Ansible API Token.
+# asana_token: Bearer 1/xxxxxxxxxxxxxxxx:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# Input Configuration
+fields:
+  - id: asana_token
+    type: string
+    label: asana_token
+    secret: true
+required:
+  - asana_token
+
+
+
+# Injector configuration
+extra_vars:
+  asana_token: '{{ asana_token }}'

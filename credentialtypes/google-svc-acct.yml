@@ -1,0 +1,58 @@
+# This is the definition for an Ansible Tower Credential Type
+# for creating the Google Service Account
+
+# Input Configuration
+fields:
+  - id: auth_provider_x509_cert_url
+    type: string
+    label: auth_provider_x509_cert_url
+  - id: auth_uri
+    type: string
+    label: auth_uri
+  - id: client_x509_cert_url
+    type: string
+    label: client_x509_cert_url
+  - id: client_email
+    type: string
+    label: client_email
+  - id: client_id
+    type: string
+    label: client_id
+  - id: project_id
+    type: string
+    label: project_id
+  - id: token_uri
+    type: string
+    label: token_uri
+  - id: private_key_id
+    type: string
+    label: private_key_id
+  - id: private_key
+    type: string
+    label: private_key
+    format: ssh_private_key
+    secret: true
+    multiline: true
+required:
+  - auth_provider_x509_cert_url
+  - auth_uri
+  - client_x509_cert_url
+  - client_email
+  - client_id
+  - project_id
+  - token_uri
+  - private_key_id
+  - private_key
+
+
+# Injector configuration
+extra_vars:
+  auth_provider_x509_cert_url: '{{ auth_provider_x509_cert_url }}'
+  auth_uri: '{{ auth_uri }}'
+  client_x509_cert_url: '{{ client_x509_cert_url }}'
+  client_email: '{{ client_email }}'
+  client_id: '{{ client_id }}'
+  project_id: '{{ project_id }}'
+  token_uri: '{{ token_uri }}'
+  private_key_id: '{{ private_key_id }}'
+  private_key: '{{ private_key }}'

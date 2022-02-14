@@ -9,6 +9,7 @@ asana_template_tasks:
 # project section gids are unique to a region / project
 asana_sections:
   'Fixme': '1200291243594294' # Multi-Select / Needs Attention
+  'Accelerate new app delivery': '1201818364596982'
   'BDM  AI/ML and Analytics': '1200291243594289'
   'BDM  Automation': '1200291243594284'
   'BDM  Customer Engagement Hub': '1200291243594288'

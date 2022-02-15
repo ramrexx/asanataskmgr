@@ -5,7 +5,7 @@ range:
 region:
 
 ######################################################
-# fiserv - project gids unique to a Asana project
+# WC - project gids unique to a Asana project
 project_gid: 1201828315354273
 asana_template_tasks:
   'Account': '1201820157205513' # TMP-ACCOUNT

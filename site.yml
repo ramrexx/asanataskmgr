@@ -18,7 +18,7 @@
 
     - name: Get a list of tasks in a project ({{ project_gid }})
       uri:
-        url: "{{ asana_api }}/projects/{{project_gid}}/tasks"
+        url: "{{ asana_api }}/projects/{{ project_gid }}/tasks"
         headers:
           Content-Type: application/json
           Authorization: "{{ asana_token }}"

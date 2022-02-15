@@ -6,17 +6,17 @@ region:
 
 ######################################################
 # fiserv - project gids unique to a Asana project
-project_gid:
+project_gid: 1201828315354273
 asana_template_tasks:
-  'Account': '' # TMP-ACCOUNT
-  'Renewal': '' # TMP-RENEWAL
-  'Overlay Credit': '' # TMP-RENEWAL
-  'NA Sales Opportunity': '' # TMP-NETNEW
-  'inactive': '' # TMP-INACTIVE
+  'Account': '1201820157205513' # TMP-ACCOUNT
+  'Renewal': '1201828325826794' # TMP-RENEWAL
+  'Overlay Credit': '1201828325826794' # TMP-RENEWAL
+  'NA Sales Opportunity': '1201820180034669' # TMP-NETNEW
+  'inactive': '1201820180029325' # TMP-INACTIVE
 asana_sections:
-  'Accounts': ''
-  'Commit': ''
-  'Best Case': ''
-  'Pipeline': ''
-  'Closed': ''
-  'Omitted': ''
+  'Accounts': '1201828315354274'
+  'Commit': '1201828315354275'
+  'Best Case': '1201828315354276'
+  'Pipeline': '1201828315354277'
+  'Closed': '1201828315354278'
+  'Omitted': '1201820157205507'

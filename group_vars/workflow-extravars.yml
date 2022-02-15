@@ -5,7 +5,7 @@ range:
 region:
 
 ######################################################
-# WC - project gids unique to a Asana project
+# SWT - project gids unique to a Asana project
 project_gid: 1201828315354273
 asana_template_tasks:
   'Account': '1201820157205513' # TMP-ACCOUNT
@@ -20,3 +20,20 @@ asana_sections:
   'Pipeline': '1201828315354277'
   'Closed': '1201828315354278'
   'Omitted': '1201820157205507'
+
+######################################################
+# NWT - project gids unique to a Asana project
+project_gid: 1201832033334717
+asana_template_tasks:
+  'Account': '1201832150428878' # TMP-ACCOUNT
+  'Renewal': '1201832110879711' # TMP-RENEWAL
+  'Overlay Credit': '1201832110879711' # TMP-RENEWAL
+  'NA Sales Opportunity': '1201832151337872' # TMP-NETNEW
+  'inactive': '1201832151318700' # TMP-INACTIVE
+asana_sections:
+  'Accounts': '1201832033334718'
+  'Commit': '1201832033334719'
+  'Best Case': '1201832033334720'
+  'Pipeline': '1201832033334721'
+  'Closed': '1201832033334722'
+  'Omitted': '1201832150428872'

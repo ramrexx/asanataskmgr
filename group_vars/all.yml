@@ -40,6 +40,7 @@ product_tags:
   'Middleware': '1200127522373785'
   'CloudPlatform': '1200127522373786'
   'Ansible': '1200127522373787'
+  'Management': '1200127522373787'
 
 # custom field ForecastCategory is global
 forecast_categories: # 1200235633617549

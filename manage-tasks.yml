@@ -154,6 +154,15 @@
         '1200235633617549': "{{ asana_fc | default(omit) }}" # ForecastCategory (Global)
         '1200291243594269': "{{ asana_stage | default(omit) }}" # SFDC Stage (Global)
         '1201828315600799': "{{ quip }}" # Quip (Global)
+        '1201820215579984': "{{ financial_partner_name }}" # Financial Partner (Global)
+        '1201820217179100': "{{ financial_partner_tier }}" # Financial Partner Tier (Global)
+        '1201820329554372': "{{ financial_partner_type }}" # Financial Partner Type (Global)
+        '1201820328526136': "{{ influencer1_name }}" # Influence Parter1 (Global)
+        '1201820217276780': "{{ influencer1_tier }}" # Influencer Partner1 Tier (Global)
+        '1201820217198366': "{{ influencer1_type }}" # Influencer Partner1 Type (Global)
+        '1201828315354291': "{{ influencer2_name }}" # Influence Parter2 (Global)
+        '1201820216489434': "{{ influencer2_tier }}" # Influencer Partner2 Tier (Global)
+        '1201828364184522': "{{ influencer2_type }}" # Influencer Partner2 Type (Global)
       start_on: "{{ start_date }}" # start date
       due_on: "{{ close_date }}" # close_date
       # reset the task name in case it was changed

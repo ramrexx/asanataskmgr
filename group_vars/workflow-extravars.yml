@@ -1,0 +1,22 @@
+---
+# Sample Tower Workflow extra_vars
+spreadsheet_id:
+range:
+region:
+
+######################################################
+# SDE - project gids unique to a Asana project
+project_gid: 1201851010966825
+asana_template_tasks:
+  'Account': '1201851059747151' # TMP-ACCOUNT
+  'Renewal': '1201851059926264' # TMP-RENEWAL
+  'Overlay Credit': '1201851059926264' # TMP-RENEWAL
+  'NA Sales Opportunity': '1201851013259062' # TMP-NETNEW
+  'inactive': '1201851060494383' # TMP-INACTIVE
+asana_sections:
+  'Accounts': '1201851010966826'
+  'Commit': '1201851010966827'
+  'Best Case': '1201851010966828'
+  'Pipeline': '1201851010966829'
+  'Closed': '1201851010966830'
+  'Omitted': '1201851059733603'

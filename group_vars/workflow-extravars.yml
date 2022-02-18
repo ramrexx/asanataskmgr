@@ -20,3 +20,54 @@ asana_sections:
   'Pipeline': '1201851010966829'
   'Closed': '1201851010966830'
   'Omitted': '1201851059733603'
+
+######################################################
+# LAE - project gids unique to a Asana project
+project_gid: 1201852905059839
+asana_template_tasks:
+  'Account': '1201853004829627' # TMP-ACCOUNT
+  'Renewal': '1201852956856578' # TMP-RENEWAL
+  'Overlay Credit': '1201852956856578' # TMP-RENEWAL
+  'NA Sales Opportunity': '1201852957334305' # TMP-NETNEW
+  'inactive': '1201852957306496' # TMP-INACTIVE
+asana_sections:
+  'Accounts': '1201852905059840'
+  'Commit': '1201852905059841'
+  'Best Case': '1201852905059842'
+  'Pipeline': '1201852905059843'
+  'Closed': '1201852905059844'
+  'Omitted': '1201853004415815'
+
+######################################################
+# PWE - project gids unique to a Asana project
+project_gid: 1201852905059879
+asana_template_tasks:
+  'Account': '1201853179090140' # TMP-ACCOUNT
+  'Renewal': '1201853263164733' # TMP-RENEWAL
+  'Overlay Credit': '1201853263164733' # TMP-RENEWAL
+  'NA Sales Opportunity': '1201853226647425' # TMP-NETNEW
+  'inactive': '1201853226641632' # TMP-INACTIVE
+asana_sections:
+  'Accounts': '1201852905059880'
+  'Commit': '1201852905059881'
+  'Best Case': '1201852905059882'
+  'Pipeline': '1201852905059883'
+  'Closed': '1201852905059884'
+  'Omitted': '1201853179087829'
+
+######################################################
+# NWE - project gids unique to a Asana project
+project_gid: 1201852905059860
+asana_template_tasks:
+  'Account': '1201853200309601' # TMP-ACCOUNT
+  'Renewal': '1201853102699069' # TMP-RENEWAL
+  'Overlay Credit': '1201853102699069' # TMP-RENEWAL
+  'NA Sales Opportunity': '1201853154314690' # TMP-NETNEW
+  'inactive': '1201853154228765' # TMP-INACTIVE
+asana_sections:
+  'Accounts': '1201852905059861'
+  'Commit': '1201852905059862'
+  'Best Case': '1201852905059863'
+  'Pipeline': '1201852905059864'
+  'Closed': '1201852905059865'
+  'Omitted': '1201853200309595'

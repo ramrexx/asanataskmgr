@@ -127,15 +127,15 @@
     verbosity: 2
 
 # Match the gid of the Asana Stage
-- name: Opp {{title_prefix}} - set asana_stage({{ stage }})
-  set_fact:
-    asana_stage: "{{ sfdc_stages[stage] }}"
-  when: stage | length > 0
-
-- name: Opp {{ title_prefix }} - print asana_stage
-  debug:
-      var: asana_stage
-      verbosity: 2
+# - name: Opp {{title_prefix}} - set asana_stage({{ stage }})
+#   set_fact:
+#     asana_stage: "{{ sfdc_stages[stage] }}"
+#   when: stage | length > 0
+#
+# - name: Opp {{ title_prefix }} - print asana_stage
+#   debug:
+#       var: asana_stage
+#       verbosity: 2
 
 - name: Opp {{ title_prefix }} - create dictionary based on updates and custom fields
   set_fact:

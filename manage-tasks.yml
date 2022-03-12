@@ -88,11 +88,16 @@
     var: asana_opp_type
     verbosity: 2
 
-# Match the gid of the asana section (Commit, Best Case, Pipeline, Closed)
+# Match the gid of the asana section (customer_name or forecast_category)
+- name: Opp {{ title_prefix }} - set section_gid to customer_name({{ customer_name }})
+  set_fact:
+    section_gid: "{{ asana_sections[customer_name] }}"
+  when: forecast_category != 'Omitted'
+
 - name: Opp {{ title_prefix }} - set section_gid to forecast_category({{ forecast_category }})
   set_fact:
     section_gid: "{{ asana_sections[forecast_category] }}"
-  when: forecast_category | length > 0
+  when: forecast_category == 'Omitted'
 
 - name: Opp {{ title_prefix }} - print section_gid
   debug:
@@ -139,30 +144,26 @@
       custom_fields:
         # custom text fields
         '1182531335993465': "{{ opp_owner }}" # AE (Global)
-        '1195217282482432': "{{ opp_number }}" # Opportunity Number (Global)
+        # '1195217282482432': "{{ opp_number }}" # Opportunity Number (Global)
         '1200113936496375': "https://redhat.my.salesforce.com/{{ opp_id }}" # SFDC Link (Global)
         '1200114261516681': "{{ tb }}" # TB (Global)
         '1200038584667544': "{{ syb }}" # SYB (Global)
-        '1200176345337880': "{{ tech_win_date }}" # Technical Win Date (Global)
-        '1200204527019766': "{{ reseller }}" # Channel (Global)
-        '1200204611344740': "{{ distributor }}" # Distributor (Global)
-        '1200204672011254': "{{ leadsource }}" # LeadSource (Global)
-        '1200204527686759': "{{ channel }}" # Channel (Global)
+        # '1200176345337880': "{{ tech_win_date }}" # Technical Win Date (Global)
+        # '1200204527019766': "{{ reseller }}" # Channel (Global)
+        # '1200204611344740': "{{ distributor }}" # Distributor (Global)
+        # '1200204672011254': "{{ leadsource }}" # LeadSource (Global)
+        # '1200204527686759': "{{ channel }}" # Channel (Global)
         # custom dropdown field names
         '1200008973756201': "{{ asana_fq | default(omit) }}" # Fiscal Quarter (Global)
         '1200046075857084': "{{ asana_opp_type | default(omit) }}" # OpportunityType (Global)
         '1200235633617549': "{{ asana_fc | default(omit) }}" # ForecastCategory (Global)
-        '1200291243594269': "{{ asana_stage | default(omit) }}" # SFDC Stage (Global)
+        # '1200291243594269': "{{ asana_stage | default(omit) }}" # SFDC Stage (Global)
       due_on: "{{ close_date }}" # close_date
       # reset the task name in case it was changed
       name: "{{ opp_number }} - {{ opp_name }}"
       notes: |
           Opportunity Owner: {{ opp_owner }}
           Global Customer Name: {{ customer_name }}
-          Reason: ({{ reason1 }} {{ reason2 }})
-
-          Next Step:
-          {{ next_step }}
 
           Description:
           {{ description | truncate(1024,True) }}

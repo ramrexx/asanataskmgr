@@ -5,69 +5,29 @@ range:
 region:
 
 ######################################################
-# SDE - project gids unique to a Asana project
-project_gid: 1201851010966825
+# gobig - project gids unique to a Asana project
+project_gid: 1201832908946132
 asana_template_tasks:
-  'Account': '1201851059747151' # TMP-ACCOUNT
-  'Renewal': '1201851059926264' # TMP-RENEWAL
-  'Overlay Credit': '1201851059926264' # TMP-RENEWAL
-  'NA Sales Opportunity': '1201851013259062' # TMP-NETNEW
-  'inactive': '1201851060494383' # TMP-INACTIVE
+  'Account': '1201958086498587' # TMP-ACCOUNT
+  'Renewal': '1201958086498589' # TMP-RENEWAL
+  'Overlay Credit': '1201958086498589' # TMP-RENEWAL
+  'NA Sales Opportunity': '1201958086498591' # TMP-NETNEW
+  'inactive': '1201958086498597' # TMP-INACTIVE
 asana_sections:
-  'Accounts': '1201851010966826'
-  'Commit': '1201851010966827'
-  'Best Case': '1201851010966828'
-  'Pipeline': '1201851010966829'
-  'Closed': '1201851010966830'
-  'Omitted': '1201851059733603'
-
-######################################################
-# LAE - project gids unique to a Asana project
-project_gid: 1201852905059839
-asana_template_tasks:
-  'Account': '1201853004829627' # TMP-ACCOUNT
-  'Renewal': '1201852956856578' # TMP-RENEWAL
-  'Overlay Credit': '1201852956856578' # TMP-RENEWAL
-  'NA Sales Opportunity': '1201852957334305' # TMP-NETNEW
-  'inactive': '1201852957306496' # TMP-INACTIVE
-asana_sections:
-  'Accounts': '1201852905059840'
-  'Commit': '1201852905059841'
-  'Best Case': '1201852905059842'
-  'Pipeline': '1201852905059843'
-  'Closed': '1201852905059844'
-  'Omitted': '1201853004415815'
-
-######################################################
-# PWE - project gids unique to a Asana project
-project_gid: 1201852905059879
-asana_template_tasks:
-  'Account': '1201853179090140' # TMP-ACCOUNT
-  'Renewal': '1201853263164733' # TMP-RENEWAL
-  'Overlay Credit': '1201853263164733' # TMP-RENEWAL
-  'NA Sales Opportunity': '1201853226647425' # TMP-NETNEW
-  'inactive': '1201853226641632' # TMP-INACTIVE
-asana_sections:
-  'Accounts': '1201852905059880'
-  'Commit': '1201852905059881'
-  'Best Case': '1201852905059882'
-  'Pipeline': '1201852905059883'
-  'Closed': '1201852905059884'
-  'Omitted': '1201853179087829'
-
-######################################################
-# NWE - project gids unique to a Asana project
-project_gid: 1201852905059860
-asana_template_tasks:
-  'Account': '1201853200309601' # TMP-ACCOUNT
-  'Renewal': '1201853102699069' # TMP-RENEWAL
-  'Overlay Credit': '1201853102699069' # TMP-RENEWAL
-  'NA Sales Opportunity': '1201853154314690' # TMP-NETNEW
-  'inactive': '1201853154228765' # TMP-INACTIVE
-asana_sections:
-  'Accounts': '1201852905059861'
-  'Commit': '1201852905059862'
-  'Best Case': '1201852905059863'
-  'Pipeline': '1201852905059864'
-  'Closed': '1201852905059865'
-  'Omitted': '1201853200309595'
+  'Apple Inc.': '1201957766960145'
+  'Kaiser Foundation Health Plan, Inc.': '1201958086498571'
+  'PayPal Holdings, Inc.': '1201958086498570'
+  'Providence Health & Services': '1201958086498572'
+  "California Physicians' Service, Inc.": '1201832908946134'
+  'Micron Technology, Inc.': '1201958086498573'
+  'Keysight Technologies, Inc.': '1201958086498574'
+  'Broadcom Inc.': '1201958086498575'
+  'PG&E Corporation': '1201832908946145'
+  'Advanced Micro Devices, Inc.': '1201958086498579'
+  'American Express Global Business Travel': '1201958086498583'
+  'Pennymac Mortgage Investment Trust': '1201958086498584'
+  'ON Semiconductor Corporation': '1201958086498580'
+  'Intuit Inc.': '1201958086498576'
+  'Sony Group Corporation': '1201832908946156'
+  'Encore Capital Group, Inc.': '1201832908946167'
+  'Omitted': '1201958086498593'

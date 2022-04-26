@@ -50,7 +50,7 @@ sfdc_stages: # 1200291243594269
   'Closed Booked': '1200291243594276'
   'Closed Lost': '1200304649445286'
   'Closed Won': '1200841140062260'
-
+  'Approved': '1201247075531198'
 
 # custom field NAC Region is Global
 nac_regions: # 1200291243594213

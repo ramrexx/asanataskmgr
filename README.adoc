@@ -24,7 +24,7 @@ Sync SFDC opportunities from a csv file to Asana Tasks using Ansible
 IMPORTANT: This repo is subject to frequent changes without warning.
 To avoid issues please **FORK** the repository!
 
-= Tower Setup
+= Ansible Automation Platform Setup
 
 You will need to add the following to your localhost inventory
 

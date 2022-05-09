@@ -65,6 +65,7 @@ nac_regions: # 1200291243594213
   'Southeast': '1200291243594215'
   'Telco': '1200291243594220'
   'West': '1200291243594216'
+  'NAPS': '1202249178552318'
 
 # custom field NAC Subregion is Global
 nac_subregions: # 1200244002339995
@@ -143,3 +144,4 @@ nac_subregions: # 1200244002339995
   'West Enterprise': '1200304501158631'
   'WI-MN': '1200244002340000'
   'West HQ': '1200455716440554'
+  'DoD Enterprise': '1202249234936209'

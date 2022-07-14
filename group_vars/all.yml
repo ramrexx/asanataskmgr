@@ -37,7 +37,7 @@ asana_fiscal_quarters: # 1200008973756201
 product_tags:
   'Services': '1192127966188818'
   'RHEL': '1200127522373783'
-  'RHEL': '1200127522373783'
+  'Other': '1200127522373783'
   'OpenShift': '1200127522373784'
   'Middleware': '1200127522373785'
   'CloudPlatform': '1200127522373786'

@@ -168,7 +168,7 @@
   set_fact:
     batch_data: "{{ batch_data + [{'relative_path':'/tasks/' + tsk_gid + '/addTag', 'method':'POST', 'data':{'tag': product_tags[pt] }}] }}"
   loop: "{{ products.split('|') }}"
-  when: pt != 'ERROR' or pt != 'Other'
+  when: (pt != 'ERROR') or (pt != 'Other')
   loop_control:
     loop_var: pt
 

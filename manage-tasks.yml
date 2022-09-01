@@ -163,7 +163,7 @@
         '1201828315354291': "{{ influencer2_name }}" # Influence Parter2 (Global)
         '1201820216489434': "{{ influencer2_tier }}" # Influencer Partner2 Tier (Global)
         '1201828364184522': "{{ influencer2_type }}" # Influencer Partner2 Type (Global)
-      start_on: "{{ start_date }}" # start date
+      # start_on: "{{ start_date }}" # start date
       due_on: "{{ close_date }}" # close_date
       # reset the task name in case it was changed
       name: "{{ opp_number }} - {{ opp_name }}"

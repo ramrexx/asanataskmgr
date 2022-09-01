@@ -55,7 +55,7 @@
         opp_record_type: "{{ csv_item['Opportunity Record Type'] }}"
         products: "{{ csv_item['Products'] }}"
         quip: "{{ csv_item['Quip'] }}"
-        start_date: "{{ csv_item['Start Date'] }}"
+        # start_date: "{{ csv_item['Start Date'] }}"
         syb: "{{ csv_item['SYB'] }}"
         tb: "{{ csv_item['Total Amount'] }}"
         stage: "{{ csv_item['Stage'] }}"

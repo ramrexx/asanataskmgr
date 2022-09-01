@@ -30,6 +30,7 @@ product_tags:
   'CloudPlatform': '1200127522373786'
   'Management': '1200127522373787'
   'Ansible': '1201652947301402'
+  'Other': '1202908389102452'
 
 # custom field ForecastCategory is global
 forecast_categories: # 1200235633617549
